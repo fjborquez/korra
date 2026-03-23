@@ -1,0 +1,14 @@
+.container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.indicator {
+  width: 100px;
+}
+
+.optimal {
+  --mat-progress-bar-active-indicator-color : #34C759 !important;
+  color: #34C759;
+}
