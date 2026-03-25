@@ -1,0 +1,61 @@
+steps:
+
+  - name: gcr.io/cloud-builders/npm
+    args: [ install ]
+
+  - name: gcr.io/cloud-builders/npm
+    args: [ run, build, --prod ]
+
+  - name: "gcr.io/cloud-builders/docker"
+    args:
+      [
+        "build",
+        "-t",
+        "gcr.io/avatar-471101/github.com/fjborquez/korra:$SHORT_SHA",
+        "-t",
+        "gcr.io/avatar-471101/github.com/fjborquez/korra:latest",
+        ".",
+      ]
+  - name: "gcr.io/cloud-builders/docker"
+    args:
+      [
+        "push",
+        "gcr.io/avatar-471101/github.com/fjborquez/korra:$SHORT_SHA",
+      ]
+  - name: "gcr.io/cloud-builders/docker"
+    args:
+      [
+        "push",
+        "gcr.io/avatar-471101/github.com/fjborquez/korra:latest",
+      ]
+  - name: "gcr.io/cloud-builders/gcloud"
+    args:
+      [
+        "run",
+        "deploy",
+        "korra",
+        "--image",
+        "gcr.io/avatar-471101/github.com/fjborquez/korra:$SHORT_SHA",
+        "--region",
+        "southamerica-east1",
+        "--platform",
+        "managed",
+        "--verbosity",
+        "debug",
+        "--memory",
+        "256Mi",
+        "--cpu",
+        "2000m",
+        "--port",
+        "80",
+        "--timeout",
+        "3600",
+        "--min-instances",
+        "0",
+      ]
+    env:
+      - "PORT=80"
+images:
+  - gcr.io/avatar-471101/github.com/fjborquez/korra:$SHORT_SHA
+  - gcr.io/avatar-471101/github.com/fjborquez/korra:latest
+timeout: 2400s
