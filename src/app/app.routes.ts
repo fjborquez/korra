@@ -1,6 +1,13 @@
-import { Routes } from '@angular/router';
-import { InventoryComponent } from './sections/inventory/inventory.component';
+import {Routes} from '@angular/router';
+import {Login} from './login';
+import {Dashboard} from './dashboard';
+import {Houses} from './houses';
+import {ProductDetail} from './product-detail';
 
 export const routes: Routes = [
-  { path: 'inventory', component: InventoryComponent },
+  {path: '', redirectTo: 'login', pathMatch: 'full'},
+  {path: 'login', component: Login},
+  {path: 'dashboard', component: Dashboard},
+  {path: 'houses', component: Houses},
+  {path: 'product/:id', component: ProductDetail}
 ];

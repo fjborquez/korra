@@ -1,11 +1,56 @@
-/* You can add global styles to this file, and also import other style files */
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+@import "tailwindcss";
 
-.section {
-  display: flex;
-  flex-direction: column;
-  padding: 10px;
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-headline: "Plus Jakarta Sans", sans-serif;
+
+  --color-primary: #00458f;
+  --color-primary-container: #005cbb;
+  --color-on-primary: #ffffff;
+  
+  --color-secondary: #006e28;
+  --color-secondary-container: #6ffb85;
+  --color-on-secondary-container: #00732a;
+
+  --color-surface: #faf8fe;
+  --color-surface-container: #efedf3;
+  --color-surface-container-low: #f4f3f8;
+  --color-surface-container-high: #e9e7ed;
+  --color-surface-container-highest: #e3e2e7;
+  --color-surface-container-lowest: #ffffff;
+  
+  --color-on-surface: #1a1b1f;
+  --color-on-surface-variant: #424752;
+  
+  --color-error: #ba1a1a;
+  --color-error-container: #ffdad6;
+  
+  --radius-xl: 0.75rem;
+  --radius-2xl: 1rem;
+  --radius-3xl: 1.5rem;
+  --radius-4xl: 2rem;
 }
 
+@layer base {
+  body {
+    @apply bg-surface text-on-surface font-sans antialiased;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-headline;
+  }
+}
 
+.glass-effect {
+  @apply bg-white/70 backdrop-blur-xl border border-white/20;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
