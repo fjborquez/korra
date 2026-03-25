@@ -1,8 +1,0 @@
-#inventory-list {
-  display: flex;
-  flex-direction: row;
-  gap: 20px;
-  width: 100%;
-  justify-content: center;
-  flex-wrap: wrap;
-}
