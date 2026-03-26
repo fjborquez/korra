@@ -1,5 +1,5 @@
 import {Routes} from '@angular/router';
-import {Login} from './login';
+import {Login} from './sections/login/login';
 import {Dashboard} from './dashboard';
 import {Houses} from './houses';
 import {ProductDetail} from './product-detail';
