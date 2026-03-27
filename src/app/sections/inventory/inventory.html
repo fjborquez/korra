@@ -12,14 +12,10 @@
     </div>
   </section>
 
-  <app-inventory-filters></app-inventory-filters>
+  <app-inventory-filters [status]="status()" [categories]="categories()" (filterByStatus)="filterByStatus($event)"></app-inventory-filters>
 
   <!-- Grid -->
   <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-    @for (product of products(); track product.id) {
-      <app-inventory-product [product]="product"></app-inventory-product>
-    }
-
     <!-- Smart Insight Card -->
     <div class="col-span-1 sm:col-span-2 lg:col-span-2 xl:col-span-2 bg-gradient-to-br from-primary to-primary-container rounded-[2rem] p-8 text-on-primary flex flex-col md:flex-row justify-between items-center relative overflow-hidden">
       <div class="z-10 relative">
@@ -40,5 +36,9 @@
       <div class="absolute -right-10 -bottom-10 w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
       <div class="absolute -left-10 -top-10 w-48 h-48 bg-secondary-container/10 rounded-full blur-2xl"></div>
     </div>
+
+    @for (product of productsToShow(); track product.id) {
+      <app-inventory-product [product]="product"></app-inventory-product>
+    }
   </div>
 </div>
