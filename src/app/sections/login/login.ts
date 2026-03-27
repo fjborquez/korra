@@ -19,13 +19,13 @@ export class Login {
 
 
   loginForm = this.fb.group({
-    email: ['hello@example.com', [Validators.required, Validators.email]],
+    email: ['usuario@korra.cl', [Validators.required, Validators.email]],
     password: ['password', [Validators.required]]
   });
 
   ngOnInit(): void {
     if (this.loginService.isLoggedIn()) {
-      this.router.navigate(['/dashboard']);
+      this.router.navigate(['/inventory']);
     }
   }
 
@@ -37,7 +37,7 @@ export class Login {
       email: email,
       password: password
     }).subscribe(() => {
-      this.router.navigate(['/dashboard']);
+      this.router.navigate(['/inventory']);
     });
   }
 }

@@ -1,0 +1,55 @@
+<!-- Sidebar -->
+  <aside class="h-full w-64 fixed left-0 top-0 bg-surface-container-low border-r border-outline-variant/10 flex flex-col py-8 justify-between z-40 hidden md:flex">
+    <div class="flex flex-col">
+      <div class="flex items-center gap-3 px-6 mb-8">
+        <div class="w-10 h-10 rounded-xl bg-primary flex items-center justify-center text-on-primary">
+          <mat-icon>kitchen</mat-icon>
+        </div>
+        <div>
+          <h2 class="text-lg font-black text-primary leading-tight">Korra</h2>
+          <p class="text-[10px] text-on-surface-variant font-medium uppercase tracking-wider">Simplifica tu cocina</p>
+        </div>
+      </div>
+
+      <!-- House Selector -->
+      <div class="px-4 mb-6">
+        <span class="block text-[10px] font-bold uppercase tracking-widest text-on-surface-variant mb-1.5 ml-1">Active House</span>
+        <div class="relative group">
+          <button class="w-full flex items-center justify-between gap-3 px-4 py-2.5 bg-surface-container-lowest border border-outline-variant/20 rounded-xl hover:border-primary/50 transition-all text-left shadow-sm">
+            <div class="flex items-center gap-3 overflow-hidden">
+              <div class="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
+                <mat-icon class="text-primary text-lg">home</mat-icon>
+              </div>
+              <div class="truncate">
+                <p class="text-sm font-bold text-on-surface truncate">{{ larder.activeHouseId() === '1' ? 'Home' : 'Beach House' }}</p>
+                <p class="text-[10px] text-on-surface-variant font-medium truncate">Primary Residence</p>
+              </div>
+            </div>
+            <mat-icon class="text-on-surface-variant text-sm shrink-0">unfold_more</mat-icon>
+          </button>
+        </div>
+      </div>
+
+      <nav class="space-y-1">
+        <a routerLink="/dashboard" routerLinkActive="bg-primary/10 text-primary border-r-4 border-primary" class="flex items-center gap-3 px-6 py-3 text-on-surface-variant font-headline text-sm font-semibold transition-all">
+          <mat-icon>inventory_2</mat-icon>
+          Inventory
+        </a>
+        <a routerLink="/houses" routerLinkActive="bg-primary/10 text-primary border-r-4 border-primary" class="flex items-center gap-3 px-6 py-3 text-on-surface-variant font-headline text-sm font-semibold transition-all">
+          <mat-icon>home_work</mat-icon>
+          Houses
+        </a>
+      </nav>
+    </div>
+
+    <div class="flex flex-col pt-4 border-t border-outline-variant/10">
+      <a href="javascript:void(0)" class="text-on-surface-variant px-6 py-3 hover:bg-surface-container-high rounded-lg flex items-center gap-3 font-headline text-sm font-semibold transition-all">
+        <mat-icon>settings</mat-icon>
+        Settings
+      </a>
+      <a href="javascript:void(0)" class="text-on-surface-variant px-6 py-3 hover:bg-surface-container-high rounded-lg flex items-center gap-3 font-headline text-sm font-semibold transition-all">
+        <mat-icon>help</mat-icon>
+        Help
+      </a>
+    </div>
+  </aside>
