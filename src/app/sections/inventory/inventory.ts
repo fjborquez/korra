@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, Input, OnInit, signal } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { LarderService } from '../../larder.service';
 import { CommonModule } from '@angular/common';
@@ -24,11 +24,16 @@ export class Inventory implements OnInit {
   categories: any = signal([]);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   immediatlyAttention: any = signal([]);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  status: any = signal([]);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  productsToShow: any = signal([]);
 
   ngOnInit() {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     this.inventoryService.list(1, 1).subscribe((response: any) => {
       this.products.set(response.message);
+      this.productsToShow.set(response.message);
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       this.categories.set([...new Set(response.message.map((product: any) => product.category_name))]);
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -36,7 +41,21 @@ export class Inventory implements OnInit {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         product.product_status.find((status: any) => status.pivot.is_active === 1).description === 'Approaching Expiry' ||
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        product.product_status.find((status: any) => status.pivot.is_active === 1).description === 'Expired'));
+        product.product_status.find((status: any) => status.pivot.is_active === 1).description === 'Expired'
+      ));
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      this.status.set([...new Set(response.message.map((product: any) => product.product_status.find((status: any) =>
+        status.pivot.is_active === 1).description))]);
     });
+  }
+
+  filterByStatus(aStatus: string) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    if (aStatus === 'all') {
+      this.productsToShow.set(this.products());
+    } else {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      this.productsToShow.set(this.products().filter((product: any) => product.product_status.find((status: any) => status.pivot.is_active === 1).description  === aStatus));
+    }
   }
 }
