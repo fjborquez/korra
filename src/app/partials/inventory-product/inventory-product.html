@@ -22,8 +22,18 @@
     <div class="flex justify-between items-start mb-1">
       <h4 class="text-l font-bold text-on-surface leading-tight font-headline">{{ product.brand_name }}</h4>
     </div>
-    <p class="text-on-surface-variant text-sm mb-4">Cantidad: {{ product.quantity }} {{ product.uom_abbreviation }}</p>
-
+    <p class="text-on-surface-variant text-sm mb-4">
+      Cantidad: {{ product.quantity }} {{ product.uom_abbreviation }}
+      @if (product.purchase_date) {
+        <br/> Comprado el {{ product.purchase_date }}
+      }
+      @if (product.expiration_date) {
+        <br/> Caduca el {{ product.expiration_date }}
+      }
+      @else {
+        <br/> No caduca
+      }
+    </p>
     <div class="flex items-center justify-between">
       <div class="flex items-center gap-2">
         <button (click)="consume()" class="w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center text-on-surface-variant hover:bg-primary hover:text-on-primary transition-colors">
