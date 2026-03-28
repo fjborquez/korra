@@ -1,10 +1,6 @@
 <div class="bg-surface-container-lowest rounded-3xl p-0 overflow-hidden relative group hover:shadow-xl transition-all duration-300 border border-outline-variant/5">
   <!-- Status Bar -->
-  <div
-    class="absolute left-0 top-0 bottom-0 w-1.5 z-10"
-    [class.bg-error]="isExpiringSoon(product)"
-    [class.bg-secondary]="!isExpiringSoon(product)"
-  ></div>
+  <div class="absolute left-0 top-0 bottom-0 w-1.5 z-10" [style.background-color]="statusBgColor()"></div>
 
   <div class="aspect-[4/3] overflow-hidden relative">
     <img src="https://sublimac.com/wp-content/uploads/2017/11/default-placeholder.png" [alt]="product.catalog_description" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
