@@ -35,8 +35,9 @@ export class InventoryProduct implements OnInit {
     return diff < 3 * 24 * 60 * 60 * 1000;
   }
 
-  consume() {
-    // Logic to update quantity
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  consume(product: any) {
+    this.inventoryService.consume(1, 1, product.id).subscribe();
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

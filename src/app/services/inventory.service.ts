@@ -15,4 +15,8 @@ export class InventoryService {
   discard(userId: number, houseId: number, inventoryId: number) {
     return this.http.put(environment.backendUrl + `user/${userId}/houses/${houseId}/inventory/${inventoryId}/discard`, {});
   }
+
+  consume(userId: number, houseId: number, inventoryId: number) {
+    return this.http.put(environment.backendUrl + `user/${userId}/houses/${houseId}/inventory/${inventoryId}/consume`, {});
+  }
 }
