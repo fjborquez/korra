@@ -1,3 +1,4 @@
+@if (loginService.isUser()) {
 <div class="min-h-screen bg-surface">
   <app-sidebar></app-sidebar>
   <main class="md:pl-64 pt-16 px-6 md:px-10">
@@ -5,3 +6,7 @@
     <router-outlet />
   </main>
 </div>
+}
+@else {
+  <router-outlet />
+}

@@ -46,13 +46,13 @@ export class LoginService {
     return false;
   }
 
-  isAdmin() {
+  isUser() {
     const accessToken = localStorage.getItem("accessToken");
 
     if (accessToken) {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const tokenDecoded: any = jwtDecode(accessToken);
-      return tokenDecoded.scopes.includes("admin");
+      return tokenDecoded.scopes.includes("user");
     }
 
     return false;

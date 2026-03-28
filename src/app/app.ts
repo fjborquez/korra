@@ -1,7 +1,8 @@
-import {ChangeDetectionStrategy, Component} from '@angular/core';
+import {ChangeDetectionStrategy, Component, inject} from '@angular/core';
 import {RouterOutlet} from '@angular/router';
 import { AppSidebar } from './partials/app-sidebar/app-sidebar';
 import { AppHeader } from './partials/app-header/app-header';
+import { LoginService } from './services/login.service';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -11,4 +12,6 @@ import { AppHeader } from './partials/app-header/app-header';
   templateUrl: './app.html',
   styleUrls: ['./app.css'],
 })
-export class App {}
+export class App {
+  loginService: LoginService = inject(LoginService);
+}
