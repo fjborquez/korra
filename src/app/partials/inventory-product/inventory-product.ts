@@ -4,6 +4,8 @@ import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { InventoryService } from '../../services/inventory.service';
 import { LoginService } from '../../services/login.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+
 
 @Component({
   selector: 'app-inventory-product',
@@ -14,6 +16,7 @@ import { LoginService } from '../../services/login.service';
 export class InventoryProduct implements OnInit {
   inventoryService: InventoryService = inject(InventoryService);
   loginService: LoginService = inject(LoginService);
+  matSnackBar: MatSnackBar = inject(MatSnackBar);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   @Input() product: any;
@@ -44,13 +47,21 @@ export class InventoryProduct implements OnInit {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   consume(product: any) {
     const userId = this.loginService.getUserId();
-    this.inventoryService.consume(userId, 1, product.id).subscribe();
+    this.inventoryService.consume(userId, 1, product.id).subscribe(() => {
+      this.matSnackBar.open('Producto marcado como consumido', 'Cerrar', {
+        duration: 3000,
+      });
+    });
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   discard(product: any) {
     const userId = this.loginService.getUserId();
-    this.inventoryService.discard(userId, 1, product.id).subscribe();
+    this.inventoryService.discard(userId, 1, product.id).subscribe(() => {
+      this.matSnackBar.open('Producto marcado como descartado', 'Cerrar', {
+        duration: 3000,
+      });
+    });
   }
 
   getStatusBgColor(status: string) {
