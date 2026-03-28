@@ -23,18 +23,22 @@ export class InventoryProduct implements OnInit {
   statusBgColor: any = signal('');
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   statusColor: any = signal('');
+  expirationDate!: Date;
+  purchaseDate!: Date;
 
   ngOnInit(): void {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     this.currentStatus.set(this.product.product_status.find((status: any) => status.pivot.is_active === 1).description);
     this.statusBgColor.set(this.getStatusBgColor(this.currentStatus()));
     this.statusColor.set(this.getStatusColor(this.currentStatus()));
-  }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  isExpiringSoon(product: any): boolean {
-    const diff = new Date(product.expiration_date).getTime() - Date.now();
-    return diff < 3 * 24 * 60 * 60 * 1000;
+    if (this.product.expiration_date) {
+      this.expirationDate = new Date(this.product.expiration_date);
+    }
+
+    if (this.product.purchase_date) {
+      this.purchaseDate = new Date(this.product.purchase_date);
+    }
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

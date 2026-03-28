@@ -24,11 +24,11 @@
     </div>
     <p class="text-on-surface-variant text-sm mb-4">
       Cantidad: {{ product.quantity }} {{ product.uom_abbreviation }}
-      @if (product.purchase_date) {
-        <br/> Comprado el {{ product.purchase_date }}
+      @if (purchaseDate) {
+        <br/> Comprado el {{ purchaseDate | date: 'dd/MM/yyyy' }}
       }
-      @if (product.expiration_date) {
-        <br/> Caduca el {{ product.expiration_date }}
+      @if (expirationDate) {
+        <br/> Caduca el {{ expirationDate | date: 'dd/MM/yyyy' }}
       }
       @else {
         <br/> No caduca
