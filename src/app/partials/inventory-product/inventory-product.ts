@@ -1,8 +1,8 @@
-import { Component, Input, OnInit, signal } from '@angular/core';
-import { InventoryItem } from '../../larder.service';
+import { Component, inject, Input, OnInit, signal } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { InventoryService } from '../../services/inventory.service';
 
 @Component({
   selector: 'app-inventory-product',
@@ -11,6 +11,8 @@ import { CommonModule } from '@angular/common';
   styleUrl: './inventory-product.css',
 })
 export class InventoryProduct implements OnInit {
+  inventoryService: InventoryService = inject(InventoryService);
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   @Input() product: any;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -37,8 +39,10 @@ export class InventoryProduct implements OnInit {
     // Logic to update quantity
   }
 
-  remove(item: InventoryItem) {
-    //this.larder.removeItem(item.id);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  discard(product: any) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    this.inventoryService.discard(1, 1, product.id).subscribe();
   }
 
   getStatusBgColor(status: string) {

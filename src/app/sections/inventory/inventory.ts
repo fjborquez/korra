@@ -4,7 +4,7 @@ import { LarderService } from '../../larder.service';
 import { CommonModule } from '@angular/common';
 import { InventoryFilters } from "../../partials/inventory-filters/inventory-filters";
 import { InventoryProduct } from "../../partials/inventory-product/inventory-product";
-import { Inventory as InventoryService } from '../../services/inventory';
+import { InventoryService } from '../../services/inventory.service';
 import { SmartInsight } from "../../partials/smart-insight/smart-insight";
 
 
