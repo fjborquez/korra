@@ -71,4 +71,20 @@ export class InventoryProduct implements OnInit {
 
     return color;
   }
+
+  getStatusTranslation(status: string) {
+    let translation = '';
+
+    if (status === 'Fresh') {
+      translation = 'Fresco';
+    } else if (status === 'Approaching Expiry') {
+      translation = 'Caduca pronto';
+    } else if (status === 'Undefined') {
+      translation = 'Indefinido';
+    } else if (status === 'Expired') {
+      translation = 'Caducado';
+    }
+
+    return translation;
+  }
 }
