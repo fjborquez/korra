@@ -3,7 +3,7 @@
   <button (click)="selectStatus('all')" [ngClass]="{'bg-primary': 'all' === clicked, 'text-on-primary': 'all' === clicked, 'bg-surface-container-high': 'all' !== clicked, 'text-on-surface-variant': 'all' !== clicked, 'hover:bg-surface-container-highest': 'all' !== clicked}" class="px-6 py-2.5 rounded-full text-sm font-semibold whitespace-nowrap">Mostrar todo</button>
   @for (aStatus of status; track aStatus) {
     <button (click)="selectStatus(aStatus)" [ngClass]="{'bg-primary': aStatus === clicked, 'text-on-primary': aStatus === clicked, 'bg-surface-container-high': aStatus !== clicked, 'text-on-surface-variant': aStatus !== clicked, 'hover:bg-surface-container-highest': aStatus !== clicked}" class="px-6 py-2.5  transition-colors rounded-full text-sm font-semibold whitespace-nowrap">
-      {{ aStatus }}
+      {{ getTranslatedStatus(aStatus) }}
     </button>
   }
   <div class="w-px h-6 bg-outline-variant/30 mx-2"></div>

@@ -9,7 +9,7 @@
         @if (currentStatus() === 'Expired') {
           <mat-icon class="text-xs h-auto w-auto">warning</mat-icon>
         }
-        {{ currentStatus() }}
+        {{ getStatusTranslation(currentStatus()) }}
       </span>
     </div>
   </div>

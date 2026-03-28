@@ -15,9 +15,23 @@ export class InventoryFilters {
 
   clicked = 'all';
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  selectStatus(aStatus: any) {
+  selectStatus(aStatus: string) {
     this.clicked = aStatus;
     this.filterByStatus.emit(aStatus);
+  }
+
+  getTranslatedStatus(aStatus: string) {
+    switch (aStatus) {
+      case 'Fresh':
+        return 'Fresco';
+      case 'Approaching Expiry':
+        return 'Caduca pronto';
+      case 'Expired':
+        return 'Caducado';
+      case 'Undefined':
+        return 'Indefinido';
+      default:
+        return '';
+    }
   }
 }
