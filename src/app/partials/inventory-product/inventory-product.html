@@ -8,14 +8,14 @@
 
   <div class="aspect-[4/3] overflow-hidden relative">
     <img src="https://sublimac.com/wp-content/uploads/2017/11/default-placeholder.png" [alt]="product.catalog_description" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-    @if (isExpiringSoon(product)) {
-      <div class="absolute top-3 right-3">
-        <span class="bg-error-container text-on-error-container px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider flex items-center gap-1 backdrop-blur-md">
+    <div class="absolute top-3 right-3">
+      <span [style.background-color]="statusBgColor()" [style.color]="statusColor()" class="bg-error-container text-on-error-container px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider flex items-center gap-1 backdrop-blur-md">
+        @if (currentStatus() === 'Expired') {
           <mat-icon class="text-xs h-auto w-auto">warning</mat-icon>
-          {{ getExpiryLabel(product) }}
-        </span>
-      </div>
-    }
+        }
+        {{ currentStatus() }}
+      </span>
+    </div>
   </div>
 
   <div class="p-6">
