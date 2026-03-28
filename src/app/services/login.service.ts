@@ -57,4 +57,16 @@ export class LoginService {
 
     return false;
   }
+
+  getUserId() {
+    const accessToken = localStorage.getItem("accessToken");
+
+    if (accessToken) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const tokenDecoded: any = jwtDecode(accessToken);
+      return tokenDecoded.sub;
+    }
+
+    return null;
+  }
 }

@@ -3,6 +3,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { InventoryService } from '../../services/inventory.service';
+import { LoginService } from '../../services/login.service';
 
 @Component({
   selector: 'app-inventory-product',
@@ -12,6 +13,7 @@ import { InventoryService } from '../../services/inventory.service';
 })
 export class InventoryProduct implements OnInit {
   inventoryService: InventoryService = inject(InventoryService);
+  loginService: LoginService = inject(LoginService);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   @Input() product: any;
@@ -37,13 +39,14 @@ export class InventoryProduct implements OnInit {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   consume(product: any) {
-    this.inventoryService.consume(1, 1, product.id).subscribe();
+    const userId = this.loginService.getUserId();
+    this.inventoryService.consume(userId, 1, product.id).subscribe();
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   discard(product: any) {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    this.inventoryService.discard(1, 1, product.id).subscribe();
+    const userId = this.loginService.getUserId();
+    this.inventoryService.discard(userId, 1, product.id).subscribe();
   }
 
   getStatusBgColor(status: string) {
