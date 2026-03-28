@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
@@ -12,7 +12,7 @@ import { LoginService } from '../../services/login.service';
   styleUrls: ['./login.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class Login {
+export class Login implements OnInit {
   private fb = inject(FormBuilder);
   private router = inject(Router);
   private loginService = inject(LoginService);
