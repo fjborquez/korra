@@ -47,20 +47,34 @@ export class InventoryProduct implements OnInit {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   consume(product: any) {
     const userId = this.loginService.getUserId();
-    this.inventoryService.consume(userId, 1, product.id).subscribe(() => {
-      this.matSnackBar.open('Producto marcado como consumido', 'Cerrar', {
-        duration: 3000,
-      });
+    this.inventoryService.consume(userId, 1, product.id).subscribe({
+      error: () => {
+        this.matSnackBar.open('No    pudo marcar el producto como consumido', 'Cerrar', {
+          duration: 3000,
+        });
+      },
+      next: () => {
+        this.matSnackBar.open('Producto marcado como consumido', 'Cerrar', {
+          duration: 3000,
+        });
+      },
     });
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   discard(product: any) {
     const userId = this.loginService.getUserId();
-    this.inventoryService.discard(userId, 1, product.id).subscribe(() => {
-      this.matSnackBar.open('Producto marcado como descartado', 'Cerrar', {
-        duration: 3000,
-      });
+    this.inventoryService.discard(userId, 1, product.id).subscribe({
+      error: () => {
+        this.matSnackBar.open('No se pudo marcar el producto como descartado', 'Cerrar', {
+          duration: 3000,
+        });
+      },
+      next: () => {
+        this.matSnackBar.open('Producto marcado como descartado', 'Cerrar', {
+          duration: 3000,
+        });
+      },
     });
   }
 
