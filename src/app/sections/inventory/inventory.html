@@ -16,26 +16,7 @@
 
   <!-- Grid -->
   <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-    <!-- Smart Insight Card -->
-    <div class="col-span-1 sm:col-span-2 lg:col-span-2 xl:col-span-2 bg-gradient-to-br from-primary to-primary-container rounded-[2rem] p-8 text-on-primary flex flex-col md:flex-row justify-between items-center relative overflow-hidden">
-      <div class="z-10 relative">
-        <p class="text-on-primary/70 font-bold text-[10px] uppercase tracking-widest mb-2">Smart Insights</p>
-        <h2 class="text-3xl font-extrabold font-headline mb-4 max-w-xs">Reduce your food waste by 15% this month.</h2>
-        <button class="bg-white text-primary px-6 py-3 rounded-full text-sm font-bold shadow-xl hover:scale-105 transition-transform">View Weekly Report</button>
-      </div>
-      <div class="mt-8 md:mt-0 z-10 flex gap-8">
-        <div class="text-center">
-          <p class="text-4xl font-black mb-1">24%</p>
-          <p class="text-[10px] font-bold uppercase text-on-primary/60">Waste Reduction</p>
-        </div>
-        <div class="text-center">
-          <p class="text-4xl font-black mb-1">3d</p>
-          <p class="text-[10px] font-bold uppercase text-on-primary/60">Avg shelf life</p>
-        </div>
-      </div>
-      <div class="absolute -right-10 -bottom-10 w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
-      <div class="absolute -left-10 -top-10 w-48 h-48 bg-secondary-container/10 rounded-full blur-2xl"></div>
-    </div>
+    <app-smart-insight></app-smart-insight>
 
     @for (product of productsToShow(); track product.id) {
       <app-inventory-product [product]="product"></app-inventory-product>
