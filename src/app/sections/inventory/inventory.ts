@@ -1,11 +1,11 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
-import { LarderService } from '../../larder.service';
 import { CommonModule } from '@angular/common';
 import { InventoryFilters } from "../../partials/inventory-filters/inventory-filters";
 import { InventoryProduct } from "../../partials/inventory-product/inventory-product";
 import { InventoryService } from '../../services/inventory.service';
 import { SmartInsight } from "../../partials/smart-insight/smart-insight";
+import { LoginService } from '../../services/login.service';
 
 
 @Component({
@@ -17,7 +17,7 @@ import { SmartInsight } from "../../partials/smart-insight/smart-insight";
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class Inventory implements OnInit {
-  larder = inject(LarderService);
+  loginService: LoginService = inject(LoginService);
   inventoryService = inject(InventoryService);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   products: any = signal([]);
@@ -31,8 +31,9 @@ export class Inventory implements OnInit {
   productsToShow: any = signal([]);
 
   ngOnInit() {
+    const userId = this.loginService.getUserId();
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    this.inventoryService.list(1, 1).subscribe((response: any) => {
+    this.inventoryService.list(userId, 1).subscribe((response: any) => {
       this.products.set(response.message);
       this.productsToShow.set(response.message);
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
