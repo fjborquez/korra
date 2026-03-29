@@ -29,7 +29,7 @@
         @if (isPropertyDropdownOpen()) {
           <div class="absolute top-full w-full mt-2 bg-surface-container-lowest rounded-xl shadow-lg border border-outline-variant/10 overflow-hidden py-2 z-50 animate-in fade-in slide-in-from-top-2 duration-200">
             <div class="px-3 py-2 text-[10px] font-bold uppercase tracking-wider text-outline">Selecciona una casa</div>
-            @for(house of houses(); track house.id) {
+            @for(house of houses(); track house) {
               <div tabindex="0" (click)="selectHouse(house)" (keydown.enter)="selectHouse(house)" [ngClass]="{'border-primary': house.id === selectedHouse().id, 'bg-primary/5': house.id === selectedHouse().id, 'border-r-4': house.id === selectedHouse().id}" class="flex items-center gap-3 px-3 py-3">
                 <mat-icon class="text-primary">home</mat-icon>
                 <div class="flex-1">
