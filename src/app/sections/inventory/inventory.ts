@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, inject, Signal, signal } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
 import { InventoryFilters } from "../../partials/inventory-filters/inventory-filters";
@@ -6,6 +6,7 @@ import { InventoryProduct } from "../../partials/inventory-product/inventory-pro
 import { InventoryService } from '../../services/inventory.service';
 import { SmartInsight } from "../../partials/smart-insight/smart-insight";
 import { LoginService } from '../../services/login.service';
+import { ROUTER_OUTLET_DATA } from '@angular/router';
 
 
 @Component({
@@ -16,9 +17,11 @@ import { LoginService } from '../../services/login.service';
   styleUrls: ['./inventory.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class Inventory implements OnInit {
+export class Inventory {
   loginService: LoginService = inject(LoginService);
   inventoryService = inject(InventoryService);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  houseId: Signal<any> = inject(ROUTER_OUTLET_DATA);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   products: any = signal([]);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -32,24 +35,30 @@ export class Inventory implements OnInit {
   statusFilter = 'all';
   categoryFilter = '';
 
-  ngOnInit() {
-    const userId = this.loginService.getUserId();
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    this.inventoryService.list(userId, 1).subscribe((response: any) => {
-      this.products.set(response.message);
-      this.productsToShow.set(response.message);
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      this.categories.set([...new Set(response.message.map((product: any) => product.category_name))]);
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      this.immediatlyAttention.set(response.message.filter((product: any) =>
+  constructor() {
+    effect(() => {
+      const userId = this.loginService.getUserId();
+      const houseId = this.houseId();
+
+      if (houseId !== null) {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        product.product_status.find((status: any) => status.pivot.is_active === 1).description === 'Approaching Expiry' ||
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        product.product_status.find((status: any) => status.pivot.is_active === 1).description === 'Expired'
-      ));
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      this.status.set([...new Set(response.message.map((product: any) => product.product_status.find((status: any) =>
-        status.pivot.is_active === 1).description))]);
+        this.inventoryService.list(userId, houseId).subscribe((response: any) => {
+          this.products.set(response.message);
+          this.productsToShow.set(response.message);
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          this.categories.set([...new Set(response.message.map((product: any) => product.category_name))]);
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          this.immediatlyAttention.set(response.message.filter((product: any) =>
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            product.product_status.find((status: any) => status.pivot.is_active === 1).description === 'Approaching Expiry' ||
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            product.product_status.find((status: any) => status.pivot.is_active === 1).description === 'Expired'
+          ));
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          this.status.set([...new Set(response.message.map((product: any) => product.product_status.find((status: any) =>
+            status.pivot.is_active === 1).description))]);
+        });
+      }
     });
   }
 
