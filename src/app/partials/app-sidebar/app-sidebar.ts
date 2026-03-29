@@ -32,7 +32,7 @@ export class AppSidebar implements OnInit {
     this.houseService.list(userId).subscribe((houses: any) => {
       this.houses.set(houses.message);
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      this.selectedHouse.set(houses.message.find((house: any) => house.is_active === 1 && house.persons.filter((person: any) => person.user.id === userId && person.pivot.is_default === 1)));
+      this.selectedHouse.set(houses.message.find((house: any) => house.is_active === 1 && house.persons.filter((person: any) => person.user?.id === userId && person.pivot.is_default === 1)));
       this.currentHouseId.emit(this.selectedHouse().id);
     });
 
