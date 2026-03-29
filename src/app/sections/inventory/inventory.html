@@ -12,7 +12,7 @@
     </div>
   </section>
 
-  <app-inventory-filters [status]="status()" [categories]="categories()" (filterByStatus)="filterByStatus($event)"></app-inventory-filters>
+  <app-inventory-filters [status]="status()" [categories]="categories()" (filterByStatus)="filterByStatusChanged($event)" (filterByCategory)="filterByCategoryChanged($event)"></app-inventory-filters>
 
   <!-- Grid -->
   <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
