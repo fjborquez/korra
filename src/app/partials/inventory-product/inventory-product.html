@@ -36,10 +36,10 @@
     </p>
     <div class="flex items-center justify-between">
       <div class="flex items-center gap-2">
-        <button (click)="consume(product)" class="w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center text-on-surface-variant hover:bg-primary hover:text-on-primary transition-colors">
-          <mat-icon class="text-sm">remove</mat-icon>
+        <button (click)="openModal('consume', product)" class="w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center text-on-surface-variant hover:bg-primary hover:text-on-primary transition-colors">
+          <mat-icon class="text-sm">restaurant</mat-icon>
         </button>
-        <button (click)="discard(product)" class="w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center text-on-surface-variant hover:bg-error hover:text-on-error transition-colors">
+        <button (click)="openModal('discard', product)" class="w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center text-on-surface-variant hover:bg-error hover:text-on-primary transition-colors">
           <mat-icon class="text-sm">delete</mat-icon>
         </button>
       </div>
@@ -50,3 +50,46 @@
     </div>
   </div>
 </div>
+
+@if (modalState().isOpen) {
+  <div class="fixed inset-0 z-[100] flex items-center justify-center p-4">
+    <!-- Backdrop -->
+    <div class="absolute inset-0 bg-on-surface/40 backdrop-blur-sm transition-opacity" tabindex="0" (keypress)="closeModal()" (click)="closeModal()"></div>
+
+    <!-- Modal Content -->
+    <div class="relative bg-surface-container-lowest rounded-[2rem] shadow-2xl max-w-sm w-full overflow-hidden border border-outline-variant/20">
+      <div class="p-8 flex flex-col items-center text-center">
+        <!-- Icon -->
+        <div class="w-16 h-16 rounded-2xl flex items-center justify-center mb-6"
+              [ngClass]="modalState().type === 'consume' ? 'bg-primary/10 text-primary' : 'bg-error-container text-error'">
+          <span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 1;">
+            <mat-icon>{{ modalState().type === 'consume' ? 'restaurant' : 'warning' }}</mat-icon>
+          </span>
+        </div>
+
+        <h3 class="text-2xl font-extrabold text-on-surface mb-3 tracking-tight">
+          {{ modalState().type === 'consume' ? '¿Confirmar consumo?' : '¿Descartar producto?' }}
+        </h3>
+
+        <p class="text-on-surface-variant leading-relaxed text-sm mb-8">
+          @if (modalState().type === 'consume') {
+            ¿Ya consumiste este <strong>{{ modalState().item.catalog_description }}</strong>?. Esta acción no se puede deshacer. ¿Deseas continuar?
+          } @else {
+            Estás a punto de descartar <strong>{{ modalState().item.catalog_description }}</strong> de tu inventario. Esta acción no se puede deshacer. ¿Deseas continuar?
+          }
+        </p>
+
+        <div class="flex flex-col w-full gap-3">
+          <button (click)="confirmAction()"
+                  class="w-full py-4 rounded-2xl font-bold text-sm transition-all shadow-lg"
+                  [ngClass]="modalState().type === 'consume' ? 'bg-primary text-on-primary shadow-primary/20' : 'bg-error text-on-error shadow-error/20'">
+             {{ modalState().type === 'consume' ? 'Confirmar' : 'Descartar' }}
+          </button>
+          <button (click)="closeModal()" class="w-full py-4 bg-transparent text-on-surface-variant hover:bg-surface-container rounded-2xl font-bold text-sm transition-colors">
+            Cancelar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+}
