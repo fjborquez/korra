@@ -1,6 +1,6 @@
-import { Component, inject, Input, OnInit, signal } from '@angular/core';
+import { Component, inject, Input, OnInit, Signal, signal } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
-import { RouterLink } from '@angular/router';
+import { ROUTER_OUTLET_DATA, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { InventoryService } from '../../services/inventory.service';
 import { LoginService } from '../../services/login.service';
@@ -26,6 +26,8 @@ export class InventoryProduct implements OnInit {
   statusBgColor: any = signal('');
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   statusColor: any = signal('');
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  houseId: Signal<any> = inject(ROUTER_OUTLET_DATA);
   expirationDate!: Date;
   purchaseDate!: Date;
 
@@ -47,7 +49,9 @@ export class InventoryProduct implements OnInit {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   consume(product: any) {
     const userId = this.loginService.getUserId();
-    this.inventoryService.consume(userId, 1, product.id).subscribe({
+    const houseId = this.houseId();
+
+    this.inventoryService.consume(userId, houseId, product.id).subscribe({
       error: () => {
         this.matSnackBar.open('No    pudo marcar el producto como consumido', 'Cerrar', {
           duration: 3000,
@@ -64,7 +68,9 @@ export class InventoryProduct implements OnInit {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   discard(product: any) {
     const userId = this.loginService.getUserId();
-    this.inventoryService.discard(userId, 1, product.id).subscribe({
+    const houseId = this.houseId();
+
+    this.inventoryService.discard(userId, houseId, product.id).subscribe({
       error: () => {
         this.matSnackBar.open('No se pudo marcar el producto como descartado', 'Cerrar', {
           duration: 3000,
