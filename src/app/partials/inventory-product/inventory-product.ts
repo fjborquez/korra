@@ -1,4 +1,4 @@
-import { Component, inject, Input, OnInit, Signal, signal } from '@angular/core';
+import { Component, inject, Input, OnInit, Output, Signal, signal, EventEmitter } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { ROUTER_OUTLET_DATA, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -21,6 +21,8 @@ export class InventoryProduct implements OnInit {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   @Input() product: any;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  @Output() refreshList = new EventEmitter<void>();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   currentStatus: any = signal('');
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   statusBgColor: any = signal('');
@@ -30,6 +32,17 @@ export class InventoryProduct implements OnInit {
   houseId: Signal<any> = inject(ROUTER_OUTLET_DATA);
   expirationDate!: Date;
   purchaseDate!: Date;
+
+  modalState = signal<{
+    isOpen: boolean;
+    type: 'consume' | 'discard' | null;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    item: any;
+  }>({
+    isOpen: false,
+    type: null,
+    item: null
+  });
 
   ngOnInit(): void {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -44,44 +57,6 @@ export class InventoryProduct implements OnInit {
     if (this.product.purchase_date) {
       this.purchaseDate = new Date(this.product.purchase_date);
     }
-  }
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  consume(product: any) {
-    const userId = this.loginService.getUserId();
-    const houseId = this.houseId();
-
-    this.inventoryService.consume(userId, houseId, product.id).subscribe({
-      error: () => {
-        this.matSnackBar.open('No    pudo marcar el producto como consumido', 'Cerrar', {
-          duration: 3000,
-        });
-      },
-      next: () => {
-        this.matSnackBar.open('Producto marcado como consumido', 'Cerrar', {
-          duration: 3000,
-        });
-      },
-    });
-  }
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  discard(product: any) {
-    const userId = this.loginService.getUserId();
-    const houseId = this.houseId();
-
-    this.inventoryService.discard(userId, houseId, product.id).subscribe({
-      error: () => {
-        this.matSnackBar.open('No se pudo marcar el producto como descartado', 'Cerrar', {
-          duration: 3000,
-        });
-      },
-      next: () => {
-        this.matSnackBar.open('Producto marcado como descartado', 'Cerrar', {
-          duration: 3000,
-        });
-      },
-    });
   }
 
   getStatusBgColor(status: string) {
@@ -124,5 +99,63 @@ export class InventoryProduct implements OnInit {
     }
 
     return translation;
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  openModal(type: 'consume' | 'discard', item: any) {
+    this.modalState.set({ isOpen: true, type, item });
+  }
+
+  closeModal() {
+    this.modalState.set({ isOpen: false, type: null, item: null });
+  }
+
+  confirmAction() {
+    const state = this.modalState();
+    const userId = this.loginService.getUserId();
+    const houseId = this.houseId();
+    const product = state.item;
+
+    if (state.type === 'discard') {
+      this.inventoryService.discard(userId, houseId, product.id).subscribe({
+        error: () => {
+          this.matSnackBar.open('No se pudo marcar el producto como descartado', 'Cerrar', {
+            duration: 3000,
+          });
+          this.refreshList.emit();
+          this.closeModal();
+        },
+        next: () => {
+          this.matSnackBar.open('Producto marcado como descartado', 'Cerrar', {
+            duration: 3000,
+          });
+          this.refreshList.emit();
+          this.closeModal();
+        },
+      });
+
+      return;
+    }
+
+    if (state.type === 'consume') {
+      this.inventoryService.consume(userId, houseId, product.id).subscribe({
+        error: () => {
+          this.matSnackBar.open('No se pudo marcar el producto como consumido', 'Cerrar', {
+            duration: 3000,
+          });
+          this.refreshList.emit();
+          this.closeModal();
+        },
+        next: () => {
+          this.matSnackBar.open('Producto marcado como consumido', 'Cerrar', {
+            duration: 3000,
+          });
+          this.refreshList.emit();
+          this.closeModal();
+        },
+      });
+
+      return;
+    }
   }
 }

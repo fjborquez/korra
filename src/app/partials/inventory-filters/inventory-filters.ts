@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, Output, EventEmitter, signal } from '@angular/core';
+import { Component, Input, Output, EventEmitter, signal, OnChanges, SimpleChanges } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { animate } from 'motion';
 
@@ -13,16 +13,26 @@ import { animate } from 'motion';
     .rotate-180 { transform: rotate(180deg); }
   `]
 })
-export class InventoryFilters {
+export class InventoryFilters implements OnChanges {
   @Input() status = [];
   @Input() categories = [];
+  @Input() refreshFilters = false;
   @Output() filterByStatus = new EventEmitter<string>();
   @Output() filterByCategory = new EventEmitter<string>();
-
 
   clickedStatus = 'all';
   clickedCategory = '';
   isCategoryDropdownOpen = signal(false);
+
+  ngOnChanges(changes: SimpleChanges) {
+    const refreshFilters = changes['refreshFilters'];
+
+    if (!refreshFilters?.currentValue) {
+      this.selectStatus('all');
+      this.selectCategory('');
+      this.refreshFilters = false;
+    }
+  }
 
   selectStatus(aStatus: string) {
     this.clickedStatus = aStatus;
