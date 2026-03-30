@@ -5,6 +5,9 @@ import { HouseService } from '../../services/house.service';
 import { CommonModule } from '@angular/common';
 import { NavigationEnd, Router } from '@angular/router';
 import { filter } from 'rxjs';
+import { House } from '../../interfaces/house.interface';
+import { Response } from '../../interfaces/response.interface';
+import { Person } from '../../interfaces/person.interface';
 
 @Component({
   selector: 'app-sidebar',
@@ -18,29 +21,24 @@ export class AppSidebar implements OnInit {
   router: Router = inject(Router);
 
   @Output() currentHouseId = new EventEmitter<number>();
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  houses: any = signal([]);
+  houses = signal<House[]>([]);
   isPropertyDropdownOpen = signal(false);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  selectedHouse: any = signal(null);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  showHousesSelector: any = signal(false);
+  selectedHouse = signal<House | null>(null);
+  showHousesSelector = signal(false);
 
   ngOnInit() {
     const userId = this.loginService.getUserId();
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    this.houseService.list(userId).subscribe((houses: any) => {
-      this.houses.set(houses.message);
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      this.selectedHouse.set(houses.message.find((house: any) => house.is_active === 1 && house.persons.filter((person: any) => person.user?.id === userId && person.pivot.is_default === 1)));
-      this.currentHouseId.emit(this.selectedHouse().id);
+    this.houseService.list(userId).subscribe((response: Response) => {
+      const houses: House[] = response.message;
+      this.houses.set(houses);
+      this.selectedHouse.set(houses.find((house: House) => house.is_active === 1 && house.persons.filter((person: Person) => person.user?.id === userId && person.pivot?.is_default === 1)) ?? null);
+      this.currentHouseId.emit(this.selectedHouse()?.id);
     });
 
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe((event: NavigationEnd) => {
-      // Update the condition based on the current URL
-      this.showHousesSelector = event.url !== '/inventory';
+      this.showHousesSelector.set(event.url !== '/inventory');
     });
   }
 
@@ -55,8 +53,7 @@ export class AppSidebar implements OnInit {
     }
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  selectHouse(house: any) {
+  selectHouse(house: House) {
     this.selectedHouse.set(house);
     this.currentHouseId.emit(house.id);
   }

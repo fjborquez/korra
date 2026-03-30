@@ -14,8 +14,8 @@ import { animate } from 'motion';
   `]
 })
 export class InventoryFilters implements OnChanges {
-  @Input() status = [];
-  @Input() categories = [];
+  @Input() status: string[] = [];
+  @Input() categories: string[] = [];
   @Input() refreshFilters = false;
   @Output() filterByStatus = new EventEmitter<string>();
   @Output() filterByCategory = new EventEmitter<string>();

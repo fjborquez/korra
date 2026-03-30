@@ -2,12 +2,15 @@ import { ChangeDetectionStrategy, Component, effect, inject, Signal, signal } fr
 import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
 import { InventoryFilters } from "../../partials/inventory-filters/inventory-filters";
-import { InventoryProduct } from "../../partials/inventory-product/inventory-product";
+import { InventoryProduct as ProductInInventory } from "../../interfaces/inventory-product.interface";
 import { InventoryService } from '../../services/inventory.service';
 import { SmartInsight } from "../../partials/smart-insight/smart-insight";
 import { LoginService } from '../../services/login.service';
 import { ROUTER_OUTLET_DATA } from '@angular/router';
 import { tap } from 'rxjs';
+import { InventoryProduct } from '../../partials/inventory-product/inventory-product';
+import { InventoryProductStatus } from '../../interfaces/inventory-product-status.interface';
+import { Response } from '../../interfaces/response.interface';
 
 
 @Component({
@@ -21,20 +24,13 @@ import { tap } from 'rxjs';
 export class Inventory {
   loginService: LoginService = inject(LoginService);
   inventoryService = inject(InventoryService);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  houseId: Signal<any> = inject(ROUTER_OUTLET_DATA);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  products: any = signal([]);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  categories: any = signal([]);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  immediatlyAttention: any = signal([]);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  status: any = signal([]);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  productsToShow: any = signal([]);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  refreshFilters: any = false;
+  houseId = inject(ROUTER_OUTLET_DATA) as Signal<number>;
+  products = signal<ProductInInventory[]>([]);
+  categories = signal<string[]>([]);
+  immediatlyAttention = signal<ProductInInventory[]>([]);
+  status = signal<string[]>([]);
+  productsToShow = signal<ProductInInventory[]>([]);
+  refreshFilters = false;
   statusFilter = 'all';
   categoryFilter = '';
 
@@ -61,14 +57,11 @@ export class Inventory {
       this.productsToShow.set(this.products());
     } else {
       if (this.categoryFilter === '' && this.statusFilter !== 'all') {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        this.productsToShow.set(this.products().filter((product: any) => product.product_status.find((status: any) => status.pivot.is_active === 1).description  === this.statusFilter));
+        this.productsToShow.set(this.products().filter((product: ProductInInventory) => product.product_status.find((status: InventoryProductStatus) => status.pivot?.is_active === 1)?.description  === this.statusFilter));
       } else if (this.categoryFilter !== '' && this.statusFilter === 'all') {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        this.productsToShow.set(this.products().filter((product: any) => product.category_name === this.categoryFilter));
+        this.productsToShow.set(this.products().filter((product: ProductInInventory) => product.category_name === this.categoryFilter));
       } else if (this.categoryFilter !== '' && this.statusFilter !== 'all') {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        this.productsToShow.set(this.products().filter((product: any) => product.category_name === this.categoryFilter && product.product_status.find((status: any) => status.pivot.is_active === 1).description  === this.statusFilter));
+        this.productsToShow.set(this.products().filter((product: ProductInInventory) => product.category_name === this.categoryFilter && product.product_status.find((status: InventoryProductStatus) => status.pivot?.is_active === 1)?.description  === this.statusFilter));
       }
     }
   }
@@ -78,22 +71,18 @@ export class Inventory {
     const houseId = this.houseId();
 
     return this.inventoryService.list(userId, houseId).pipe(
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      tap((response: any) => {
-        this.products.set(response.message);
-        this.productsToShow.set(response.message);
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        this.categories.set([...new Set(response.message.map((product: any) => product.category_name))]);
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        this.immediatlyAttention.set(response.message.filter((product: any) =>
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          product.product_status.find((status: any) => status.pivot.is_active === 1).description === 'Approaching Expiry' ||
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          product.product_status.find((status: any) => status.pivot.is_active === 1).description === 'Expired'
+      tap((response: Response) => {
+        const products: ProductInInventory[] = response.message as ProductInInventory[];
+
+        this.products.set(products);
+        this.productsToShow.set(products);
+        this.categories.set([...new Set(products.map((product: ProductInInventory) => product.category_name))]);
+        this.immediatlyAttention.set(products.filter((product: ProductInInventory) =>
+          product.product_status.find((status: InventoryProductStatus) => status.pivot?.is_active === 1)?.description === 'Approaching Expiry' ||
+          product.product_status.find((status: InventoryProductStatus) => status.pivot?.is_active === 1)?.description === 'Expired'
         ));
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        this.status.set([...new Set(response.message.map((product: any) => product.product_status.find((status: any) =>
-          status.pivot.is_active === 1).description))]);
+        this.status.set([...new Set(products.map((product: ProductInInventory) => product.product_status.find((status: InventoryProductStatus) =>
+          status.pivot?.is_active === 1)?.description ?? ''))]);
       }));
   }
 

@@ -14,8 +14,7 @@ import { LoginService } from './services/login.service';
 })
 export class App {
   loginService: LoginService = inject(LoginService);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  houseId: any = signal(null);
+  houseId = signal<number | null>(null);
 
   getCurrentHouseId(houseId: number) {
     this.houseId.set(houseId);
