@@ -121,6 +121,7 @@ export class InventoryProduct implements OnInit {
         error: () => {
           this.matSnackBar.open('No se pudo marcar el producto como descartado', 'Cerrar', {
             duration: 3000,
+            panelClass: ['custom-mat-snackbar']
           });
           this.refreshList.emit();
           this.closeModal();
@@ -128,6 +129,7 @@ export class InventoryProduct implements OnInit {
         next: () => {
           this.matSnackBar.open('Producto marcado como descartado', 'Cerrar', {
             duration: 3000,
+            panelClass: ['custom-mat-snackbar']
           });
           this.refreshList.emit();
           this.closeModal();
@@ -142,6 +144,7 @@ export class InventoryProduct implements OnInit {
         error: () => {
           this.matSnackBar.open('No se pudo marcar el producto como consumido', 'Cerrar', {
             duration: 3000,
+            panelClass: ['custom-mat-snackbar']
           });
           this.refreshList.emit();
           this.closeModal();
@@ -149,6 +152,7 @@ export class InventoryProduct implements OnInit {
         next: () => {
           this.matSnackBar.open('Producto marcado como consumido', 'Cerrar', {
             duration: 3000,
+            panelClass: ['custom-mat-snackbar']
           });
           this.refreshList.emit();
           this.closeModal();
