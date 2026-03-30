@@ -9,7 +9,7 @@
   --color-primary: #00458f;
   --color-primary-container: #005cbb;
   --color-on-primary: #ffffff;
-  
+
   --color-secondary: #006e28;
   --color-secondary-container: #6ffb85;
   --color-on-secondary-container: #00732a;
@@ -20,13 +20,13 @@
   --color-surface-container-high: #e9e7ed;
   --color-surface-container-highest: #e3e2e7;
   --color-surface-container-lowest: #ffffff;
-  
+
   --color-on-surface: #1a1b1f;
   --color-on-surface-variant: #424752;
-  
+
   --color-error: #ba1a1a;
   --color-error-container: #ffdad6;
-  
+
   --radius-xl: 0.75rem;
   --radius-2xl: 1rem;
   --radius-3xl: 1.5rem;
@@ -37,7 +37,7 @@
   body {
     @apply bg-surface text-on-surface font-sans antialiased;
   }
-  
+
   h1, h2, h3, h4, h5, h6 {
     @apply font-headline;
   }
@@ -53,4 +53,19 @@
 .scrollbar-hide {
   -ms-overflow-style: none;
   scrollbar-width: none;
+}
+
+.custom-mat-snackbar {
+  background-color: #00458f;
+  color: white;
+}
+
+.mat-mdc-snack-bar-container .mdc-button__label {
+  background-color: #00458f;
+  color: white;
+}
+
+.mat-mdc-snack-bar-container .mat-focus-indicator {
+  background-color: #00458f;
+  color: white;
 }
