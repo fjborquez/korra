@@ -5,6 +5,8 @@ import { CommonModule } from '@angular/common';
 import { InventoryService } from '../../services/inventory.service';
 import { LoginService } from '../../services/login.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { InventoryProduct as ProductInInventory } from '../../interfaces/inventory-product.interface';
+import { InventoryProductStatus } from '../../interfaces/inventory-product-status.interface';
 
 
 @Component({
@@ -18,26 +20,19 @@ export class InventoryProduct implements OnInit {
   loginService: LoginService = inject(LoginService);
   matSnackBar: MatSnackBar = inject(MatSnackBar);
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  @Input() product: any;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  @Input() product!: ProductInInventory;
   @Output() refreshList = new EventEmitter<void>();
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  currentStatus: any = signal('');
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  statusBgColor: any = signal('');
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  statusColor: any = signal('');
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  houseId: Signal<any> = inject(ROUTER_OUTLET_DATA);
+  currentStatus = signal<string>('');
+  statusBgColor = signal<string>('');
+  statusColor = signal<string>('');
+  houseId = inject(ROUTER_OUTLET_DATA) as Signal<number>;
   expirationDate!: Date;
   purchaseDate!: Date;
 
   modalState = signal<{
     isOpen: boolean;
     type: 'consume' | 'discard' | null;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    item: any;
+    item: ProductInInventory | null;
   }>({
     isOpen: false,
     type: null,
@@ -45,8 +40,7 @@ export class InventoryProduct implements OnInit {
   });
 
   ngOnInit(): void {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    this.currentStatus.set(this.product.product_status.find((status: any) => status.pivot.is_active === 1).description);
+    this.currentStatus.set(this.product.product_status?.find((status: InventoryProductStatus) => status.pivot?.is_active === 1)?.description ?? '');
     this.statusBgColor.set(this.getStatusBgColor(this.currentStatus()));
     this.statusColor.set(this.getStatusColor(this.currentStatus()));
 
@@ -101,8 +95,7 @@ export class InventoryProduct implements OnInit {
     return translation;
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  openModal(type: 'consume' | 'discard', item: any) {
+  openModal(type: 'consume' | 'discard', item: ProductInInventory) {
     this.modalState.set({ isOpen: true, type, item });
   }
 
@@ -114,7 +107,12 @@ export class InventoryProduct implements OnInit {
     const state = this.modalState();
     const userId = this.loginService.getUserId();
     const houseId = this.houseId();
-    const product = state.item;
+    const product: ProductInInventory | null = state.item;
+
+    if (!product) {
+      this.closeModal();
+      return;
+    }
 
     if (state.type === 'discard') {
       this.inventoryService.discard(userId, houseId, product.id).subscribe({
