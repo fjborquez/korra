@@ -5,10 +5,12 @@ import { HouseService } from '../../services/house.service';
 import { LoginService } from '../../services/login.service';
 import { Response } from '../../interfaces/response.interface';
 import { Person } from '../../interfaces/person.interface';
+import { HousesHouseInfo } from "../../partials/house-info/house-info";
+
 
 @Component({
   selector: 'app-houses',
-  imports: [MatIconModule],
+  imports: [MatIconModule, HousesHouseInfo],
   templateUrl: './houses.html',
   styleUrl: './houses.css',
 })
