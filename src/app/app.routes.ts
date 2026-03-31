@@ -1,7 +1,7 @@
 import { Inventory } from './sections/inventory/inventory';
 import {Routes} from '@angular/router';
 import {Login} from './sections/login/login';
-import {Houses} from './houses';
+import {Houses} from './sections/houses/houses';
 import {ProductDetail} from './product-detail';
 import { AuthGuard } from './auth.guard';
 
