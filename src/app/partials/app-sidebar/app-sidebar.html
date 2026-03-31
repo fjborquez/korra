@@ -1,8 +1,8 @@
 <!-- Sidebar -->
-  <aside class="h-full w-64 fixed left-0 top-0 bg-surface-container-low border-r border-outline-variant/10 flex flex-col py-8 justify-between z-40 hidden md:flex">
-    <div class="flex flex-col">
-      <div class="flex items-center gap-3 px-6 mb-8">
-        <div class="w-10 h-10 rounded-xl bg-primary flex items-center justify-center text-on-primary">
+  <aside class="w-full h-16 md:h-full md:w-64 fixed left-0 top-0 bg-surface-container-low border-b md:border-b-0 md:border-r border-outline-variant/10 flex flex-col md:py-8 justify-between z-40 transition-all">
+    <div class="flex flex-row md:flex-col items-center md:items-stretch h-full md:h-auto px-6 md:px-0">
+      <div class="flex items-center gap-3 md:px-6 md:mb-8 shrink-0">
+        <div class="w-8 h-8 md:w-10 md:h-10 rounded-xl bg-primary flex items-center justify-center text-on-primary">
           <mat-icon>kitchen</mat-icon>
         </div>
         <div>
@@ -12,25 +12,25 @@
       </div>
 
       <!-- House Selector -->
-      <div class="px-4 mb-6 relative">
+      <div class="flex-1 md:flex-none mx-3 md:mx-4 md:mb-6 relative">
         @if (selectedHouse()) {
-          <span class="block text-[10px] font-bold uppercase tracking-widest text-on-surface-variant mb-1.5 ml-1">Inventario de:</span>
-          <div (click)="togglePropertyDropdown()" (keydown)="handlePropertyKeydown($event)" tabindex="0" class="flex items-center gap-3 p-3 rounded-xl bg-surface-container-lowest shadow-sm border border-outline-variant/20 cursor-pointer hover:bg-surface-container transition-colors focus:outline-none focus:ring-2 focus:ring-primary">
-            <div class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
+          <span class="block text-[10px] font-bold uppercase tracking-widest text-on-surface-variant mb-1.5 ml-1 hidden md:block">Inventario de:</span>
+          <div (click)="togglePropertyDropdown()" (keydown)="handlePropertyKeydown($event)" tabindex="0" class="flex items-center gap-2 md:gap-3 p-1.5 md:p-3 rounded-xl bg-surface-container-lowest shadow-sm border border-outline-variant/20 cursor-pointer hover:bg-surface-container transition-colors focus:outline-none focus:ring-2 focus:ring-primary">
+            <div class="w-8 h-8 md:w-10 md:h-10 rounded-lg bg-primary/10 flex items-center justify-center text-primary shrink-0">
               <mat-icon>home</mat-icon>
             </div>
             <div class="flex-1 overflow-hidden">
-              <p class="font-headline font-bold text-sm text-primary truncate">{{ selectedHouse()?.description }}</p>
-              <p class="text-xs text-outline truncate">{{ selectedHouse()?.city?.description }}</p>
+              <p class="font-headline font-bold text-xs md:text-sm text-primary truncate leading-tight">{{ selectedHouse()?.description }}</p>
+              <p class="text-[10px] md:text-xs text-outline truncate leading-tight">{{ selectedHouse()?.city?.description }}</p>
             </div>
             <mat-icon class="text-outline transition-transform duration-300" [class.rotate-180]="isPropertyDropdownOpen()">expand_more</mat-icon>
           </div>
         }
         @if (isPropertyDropdownOpen()) {
-          <div class="absolute top-full w-full mt-2 bg-surface-container-lowest rounded-xl shadow-lg border border-outline-variant/10 overflow-hidden py-2 z-50 animate-in fade-in slide-in-from-top-2 duration-200">
-            <div class="px-3 py-2 text-[10px] font-bold uppercase tracking-wider text-outline">Selecciona una casa</div>
+          <div class="absolute top-full left-0 right-0 mt-2 bg-surface-container-lowest rounded-2xl shadow-xl border border-outline-variant/10 overflow-hidden py-2 z-50 animate-in fade-in slide-in-from-top-2 duration-200">
+            <div class="px-4 py-2 text-[10px] font-bold uppercase tracking-wider text-outline">Selecciona una casa</div>
             @for(house of houses(); track house) {
-              <div tabindex="0" (click)="selectHouse(house)" (keydown.enter)="selectHouse(house)" [ngClass]="{'border-primary': house.id === selectedHouse()?.id, 'bg-primary/5': house.id === selectedHouse()?.id, 'border-r-4': house.id === selectedHouse()?.id}" class="flex items-center gap-3 px-3 py-3">
+              <div tabindex="0" (click)="selectHouse(house)" (keydown.enter)="selectHouse(house)" [ngClass]="{'border-primary': house.id === selectedHouse()?.id, 'bg-primary/5': house.id === selectedHouse()?.id, 'border-r-4': house.id === selectedHouse()?.id}" class="flex items-center gap-3 px-4 py-3 active:bg-primary/5 transition-colors cursor-pointer">
                 <mat-icon class="text-primary">home</mat-icon>
                 <div class="flex-1">
                   <p class="font-headline font-bold text-sm text-primary">{{ house.description }}</p>
@@ -41,7 +41,7 @@
                 }
               </div>
             }
-            <div class="mt-2 pt-2 border-t border-outline-variant/10 px-3">
+            <div class="mt-2 pt-2 border-t border-outline-variant/10 px-4">
               <button class="flex items-center justify-center gap-2 py-2 text-xs font-bold text-primary hover:bg-primary/5 rounded-lg transition-colors">
                 <mat-icon class="text-sm">add</mat-icon>
                 Agrega una nueva casa
@@ -51,7 +51,7 @@
         }
       </div>
 
-      <nav class="space-y-1">
+      <nav class="space-y-1 hidden md:block">
         <a routerLink="/dashboard" routerLinkActive="bg-primary/10 text-primary border-r-4 border-primary" class="flex items-center gap-3 px-6 py-3 text-on-surface-variant font-headline text-sm font-semibold transition-all">
           <mat-icon>inventory_2</mat-icon>
           Inventory
@@ -63,7 +63,7 @@
       </nav>
     </div>
 
-    <div class="flex flex-col pt-4 border-t border-outline-variant/10">
+    <div class="flex flex-col pt-4 border-t border-outline-variant/10 hidden md:flex">
       <a href="javascript:void(0)" class="text-on-surface-variant px-6 py-3 hover:bg-surface-container-high rounded-lg flex items-center gap-3 font-headline text-sm font-semibold transition-all">
         <mat-icon>settings</mat-icon>
         Settings
