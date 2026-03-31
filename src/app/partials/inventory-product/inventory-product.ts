@@ -7,6 +7,7 @@ import { LoginService } from '../../services/login.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { InventoryProduct as ProductInInventory } from '../../interfaces/inventory-product.interface';
 import { InventoryProductStatus } from '../../interfaces/inventory-product-status.interface';
+import { getTranslatedCategory } from '../../functions/get-translated-category.function'
 
 
 @Component({
@@ -159,5 +160,9 @@ export class InventoryProduct implements OnInit {
 
       return;
     }
+  }
+
+  getTranslatedCategory(category: string) {
+    return getTranslatedCategory(category);
   }
 }
