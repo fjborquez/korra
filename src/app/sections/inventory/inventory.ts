@@ -11,6 +11,7 @@ import { tap } from 'rxjs';
 import { InventoryProduct } from '../../partials/inventory-product/inventory-product';
 import { InventoryProductStatus } from '../../interfaces/inventory-product-status.interface';
 import { Response } from '../../interfaces/response.interface';
+import { Statistics } from '../../interfaces/statistics.interface';
 
 
 @Component({
@@ -29,6 +30,7 @@ export class Inventory {
   categories = signal<string[]>([]);
   immediatlyAttention = signal<ProductInInventory[]>([]);
   status = signal<string[]>([]);
+  statistics = signal<Statistics | null>(null);
   productsToShow = signal<ProductInInventory[]>([]);
   refreshFilters = false;
   statusFilter = 'all';
@@ -72,7 +74,9 @@ export class Inventory {
 
     return this.inventoryService.list(userId, houseId).pipe(
       tap((response: Response) => {
-        const products: ProductInInventory[] = response.message as ProductInInventory[];
+        const products: ProductInInventory[] = response.message.inventory as ProductInInventory[];
+        const statistics: Statistics = response.message.statistics as Statistics;
+        this.statistics.set(statistics);
 
         this.products.set(products);
         this.productsToShow.set(products);
