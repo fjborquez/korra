@@ -3,15 +3,14 @@ import { Component, EventEmitter, inject, OnInit, Output, signal } from '@angula
 import { MatIconModule } from '@angular/material/icon';
 import { HouseService } from '../../services/house.service';
 import { CommonModule } from '@angular/common';
-import { NavigationEnd, Router } from '@angular/router';
-import { filter } from 'rxjs';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { House } from '../../interfaces/house.interface';
 import { Response } from '../../interfaces/response.interface';
 import { Person } from '../../interfaces/person.interface';
 
 @Component({
   selector: 'app-sidebar',
-  imports: [MatIconModule, CommonModule],
+  imports: [MatIconModule, CommonModule, RouterLink, RouterLinkActive],
   templateUrl: './app-sidebar.html',
   styleUrl: './app-sidebar.css',
 })
@@ -33,12 +32,6 @@ export class AppSidebar implements OnInit {
       this.houses.set(houses);
       this.selectedHouse.set(houses.find((house: House) => house.is_active === 1 && house.persons.filter((person: Person) => person.user?.id === userId && person.pivot?.is_default === 1)) ?? null);
       this.currentHouseId.emit(this.selectedHouse()?.id);
-    });
-
-    this.router.events.pipe(
-      filter(event => event instanceof NavigationEnd)
-    ).subscribe((event: NavigationEnd) => {
-      this.showHousesSelector.set(event.url !== '/inventory');
     });
   }
 

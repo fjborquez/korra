@@ -3,12 +3,14 @@
     <div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
       <div>
         <h2 class="text-4xl font-extrabold text-on-surface tracking-tight mb-2 font-headline">Recién surtido.</h2>
-        <p class="text-on-surface-variant max-w-md">Tienes {{ products().length }} productos en {{ categories().length }} categorias. {{ immediatlyAttention().length }} productos requieren tu atención inmediata.</p>
       </div>
       <button class="bg-primary text-on-primary px-8 py-4 rounded-full font-bold flex items-center gap-2 hover:scale-105 active:scale-95 transition-transform shadow-lg shadow-primary/20">
         <mat-icon>add</mat-icon>
         Add New Item
       </button>
+    </div>
+    <div>
+      <p class="text-on-surface-variant max-w-md">Tienes {{ products().length }} productos en {{ categories().length }} categorias. {{ immediatlyAttention().length }} productos requieren tu atención inmediata.</p>
     </div>
   </section>
 
