@@ -21,7 +21,7 @@
     <div class="flex justify-between items-start mb-1">
       <h4 class="text-l font-bold text-on-surface leading-tight font-headline">{{ product.brand_name }}</h4>
     </div>
-    <span class="text-[10px] font-bold text-secondary bg-secondary-container/30 px-2 py-0.5 rounded uppercase tracking-wider">{{ product.category_name }}</span>
+    <span class="text-[10px] font-bold text-secondary bg-secondary-container/30 px-2 py-0.5 rounded uppercase tracking-wider">{{ getTranslatedCategory(product.category_name) }}</span>
     <p class="text-on-surface-variant text-sm mb-4">
       Cantidad: {{ product.quantity }} {{ product.uom_abbreviation }}
       @if (purchaseDate) {
