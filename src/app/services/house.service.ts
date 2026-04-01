@@ -16,4 +16,9 @@ export class HouseService {
   add(userId: number, params = {}) {
     return this.http.post(environment.backendUrl + `user/${userId}/houses`, params)
   }
+
+  delete(userId: number, houseId: number) {
+    return this.http.delete(environment.backendUrl + `user/${userId}/houses/${houseId}`);
+
+  }
 }
