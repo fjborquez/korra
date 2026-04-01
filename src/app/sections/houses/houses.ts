@@ -1,14 +1,17 @@
 import { House } from './../../interfaces/house.interface';
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, effect, inject, OnInit, signal } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { HouseService } from '../../services/house.service';
 import { LoginService } from '../../services/login.service';
 import { Response } from '../../interfaces/response.interface';
 import { Person } from '../../interfaces/person.interface';
+import { HousesHouseInfo } from "../../partials/house-info/house-info";
+import { AddHouse } from "../../partials/add-house/add-house";
+
 
 @Component({
   selector: 'app-houses',
-  imports: [MatIconModule],
+  imports: [MatIconModule, HousesHouseInfo, AddHouse],
   templateUrl: './houses.html',
   styleUrl: './houses.css',
 })
@@ -17,9 +20,21 @@ export class Houses implements OnInit {
   loginService: LoginService = inject(LoginService);
   houses = signal<House[]>([]);
   defaultHouse = signal<House | null>(null);
+  showAddModal = signal(false);
 
+  constructor() {
+    effect(() => {
+      if (!this.showAddModal()) {
+        this.housesList();
+      }
+    });
+  }
 
   ngOnInit() {
+    this.housesList();
+  }
+
+  housesList() {
     const userId = this.loginService.getUserId();
 
     this.houseService.list(userId).subscribe((response: Response) => {
