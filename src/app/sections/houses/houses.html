@@ -3,7 +3,7 @@
     <div>
       <h2 class="text-4xl font-extrabold text-on-surface tracking-tight mb-2 font-headline">Mis Casas</h2>
     </div>
-    <button class="inline-flex items-center gap-2 px-8 py-4 bg-primary text-on-primary rounded-full font-bold text-base shadow-lg shadow-primary/20 hover:shadow-xl hover:-translate-y-0.5 transition-all">
+    <button (click)="showAddModal.set(true)" class="inline-flex items-center gap-2 px-8 py-4 bg-primary text-on-primary rounded-full font-bold text-base shadow-lg shadow-primary/20 hover:shadow-xl hover:-translate-y-0.5 transition-all">
       <mat-icon>add</mat-icon>
       Añadir Casa
     </button>
@@ -14,4 +14,7 @@
       <app-house-info [house]="house" [defaultHouse]="defaultHouse()"></app-house-info>
     }
   </div>
+  @if (showAddModal()) {
+    <app-add-house (cancelled)="showAddModal.set(false)" (saved)="showAddModal.set(false)"></app-add-house>
+  }
 </div>

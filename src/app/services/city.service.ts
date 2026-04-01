@@ -6,14 +6,10 @@ import { Response } from '../interfaces/response.interface';
 @Injectable({
   providedIn: 'root',
 })
-export class HouseService {
+export class CityService {
   private http: HttpClient = inject(HttpClient);
 
-  list(userId: number) {
-    return this.http.get<Response>(environment.backendUrl + `user/${userId}/houses`);
-  }
-
-  add(userId: number, params = {}) {
-    return this.http.post(environment.backendUrl + `user/${userId}/houses`, params)
+  list() {
+    return this.http.get<Response>(environment.backendUrl + `city`);
   }
 }

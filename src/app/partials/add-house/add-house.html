@@ -1,0 +1,86 @@
+<div class="fixed inset-0 z-[100] flex items-center justify-center p-4">
+  <!-- Backdrop -->
+  <div class="absolute inset-0 bg-surface-dim/60 glass-effect backdrop-blur-md" (click)="handleCancel()" (keydown.escape)="handleCancel()" role="button" tabindex="0" aria-label="Cerrar modal"></div>
+
+  <!-- Modal Content -->
+  <div class="relative bg-surface-container-lowest w-full max-w-lg rounded-[2rem] shadow-2xl overflow-hidden border border-white/20 animate-in fade-in zoom-in duration-300">
+    <!-- Modal Header -->
+    <div class="px-8 pt-10 pb-6">
+      <div class="flex items-center gap-3 mb-2">
+        <div class="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center">
+          <mat-icon class="text-primary">home</mat-icon>
+        </div>
+        <div>
+          <h3 class="text-2xl font-headline font-extrabold text-on-surface leading-tight">Nueva casa</h3>
+          <p class="text-sm text-on-surface-variant">Configura un nuevo inventario</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Form -->
+    <form [formGroup]="houseForm" (ngSubmit)="onSubmit()" class="px-8 pb-10 space-y-6">
+      <!-- Field: Nombre -->
+      <div class="space-y-2">
+        <label for="house-name" class="text-xs font-bold uppercase tracking-wider text-primary ml-1">Descripción</label>
+        <input
+          id="house-name"
+          formControlName="description"
+          class="w-full bg-surface-container-high border-none rounded-xl px-4 py-3.5 focus:ring-2 focus:ring-primary/20 text-on-surface placeholder:text-outline transition-all"
+          placeholder="Ej: Casa del Bosque"
+          type="text"
+        />
+      </div>
+
+      <!-- Field: Ciudad -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="space-y-2">
+          <label for="house-city" class="text-xs font-bold uppercase tracking-wider text-primary ml-1">Ciudad</label>
+          <div class="relative">
+            <select
+              id="house-city"
+              formControlName="city_id"
+              class="w-full appearance-none bg-surface-container-high border-none rounded-xl px-4 py-3.5 focus:ring-2 focus:ring-primary/20 text-on-surface transition-all pr-10"
+            >
+              @for (city of cities(); track city.id) {
+                <option value="{{ city.id }}">{{ city.description }}</option>
+              }
+            </select>
+            <mat-icon class="absolute right-3 top-3.5 text-on-surface-variant pointer-events-none">expand_more</mat-icon>
+          </div>
+        </div>
+
+        <!-- Toggle: Default -->
+        <div class="flex flex-col justify-end">
+          <label class="flex items-center cursor-pointer bg-surface-container-low px-4 py-3.5 rounded-xl hover:bg-surface-container transition-colors">
+            <div class="relative inline-flex items-center">
+              <input
+                type="checkbox"
+                formControlName="is_default"
+                class="sr-only peer"
+              />
+              <div class="w-11 h-6 bg-outline-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-secondary"></div>
+            </div>
+            <span class="ml-3 text-sm font-semibold text-on-surface">Casa por defecto</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="flex gap-4 pt-4">
+        <button
+          type="button"
+          (click)="handleCancel()"
+          class="flex-1 px-6 py-4 rounded-full font-bold text-on-surface-variant hover:bg-surface-container-high transition-all text-center"
+        >
+          Cancelar
+        </button>
+        <button
+          type="submit"
+          [disabled]="houseForm.invalid"
+          class="flex-1 px-6 py-4 rounded-full font-bold bg-primary text-on-primary shadow-lg shadow-primary/20 hover:scale-[1.02] active:scale-[0.98] transition-all text-center disabled:opacity-50 disabled:scale-100"
+        >
+          Guardar Casa
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
