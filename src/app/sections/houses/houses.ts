@@ -43,4 +43,8 @@ export class Houses implements OnInit {
       this.defaultHouse.set(houses.find((house: House) => house.persons.some((person: Person) => person.user.id === userId && person.pivot?.is_default === 1)) ?? null);
     });
   }
+
+  refreshList() {
+    this.housesList();
+  }
 }
