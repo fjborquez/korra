@@ -40,6 +40,7 @@ export class Inventory {
   constructor() {
     effect(() => {
       if (this.houseId()) {
+        this.isLoading.set(true);
         this.getList().subscribe(() => this.refreshFilters = true);
       }
     });
