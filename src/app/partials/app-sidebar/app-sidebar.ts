@@ -7,10 +7,12 @@ import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { House } from '../../interfaces/house.interface';
 import { Response } from '../../interfaces/response.interface';
 import { Person } from '../../interfaces/person.interface';
+import { HouseForm } from '../house-form/house-form';
+import { tap } from 'rxjs';
 
 @Component({
   selector: 'app-sidebar',
-  imports: [MatIconModule, CommonModule, RouterLink, RouterLinkActive],
+  imports: [MatIconModule, CommonModule, RouterLink, RouterLinkActive, HouseForm],
   templateUrl: './app-sidebar.html',
   styleUrl: './app-sidebar.css',
 })
@@ -24,21 +26,32 @@ export class AppSidebar implements OnInit {
   isPropertyDropdownOpen = signal(false);
   selectedHouse = signal<House | null>(null);
   showHousesSelector = signal(false);
+  showAddNewHouseModal = signal(false);
 
   ngOnInit() {
+    this.getHouseList().subscribe();
+  }
+
+  getHouseList() {
     const userId = this.loginService.getUserId();
-    this.houseService.list(userId).subscribe((response: Response) => {
-      const houses: House[] = response.message;
-      const defaultHouse = houses.filter((house: House) => house.persons.some((person: Person) => person.user !== null && person.user.id === userId && person.pivot?.is_default));
 
-      if (defaultHouse.length > 0) {
-        this.selectedHouse.set(defaultHouse[0]);
-      }
+    return this.houseService.list(userId).pipe(
+      tap((response: Response) => {
+        const houses: House[] = response.message;
+        const defaultHouse = houses.filter((house: House) => house.persons.some((person: Person) => person.user !== null && person.user.id === userId && person.pivot?.is_default));
 
-      this.houses.set(houses);
-      //this.selectedHouse.set();
-      this.currentHouseId.emit(this.selectedHouse()?.id);
-    });
+        if (defaultHouse.length > 0) {
+          this.selectedHouse.set(defaultHouse[0]);
+        } else if (houses.length > 0) {
+          this.selectedHouse.set(houses[0]);
+        } else {
+          this.selectedHouse.set(null);
+        }
+
+        this.houses.set(houses);
+        this.currentHouseId.emit(this.selectedHouse()?.id);
+      })
+    );
   }
 
   togglePropertyDropdown() {
@@ -55,5 +68,10 @@ export class AppSidebar implements OnInit {
   selectHouse(house: House) {
     this.selectedHouse.set(house);
     this.currentHouseId.emit(house.id);
+  }
+
+  createdHouse() {
+    this.showAddNewHouseModal.set(false);
+    this.getHouseList().subscribe();
   }
 }

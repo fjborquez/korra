@@ -26,6 +26,12 @@
             <mat-icon class="text-outline transition-transform duration-300" [class.rotate-180]="isPropertyDropdownOpen()">expand_more</mat-icon>
           </div>
         }
+        @else {
+          <button (click)="showAddNewHouseModal.set(true)" class="flex items-center justify-center gap-2 p-3 text-xs font-bold text-primary hover:bg-primary/5 rounded-lg transition-colors w-full">
+            <mat-icon class="text-sm">add</mat-icon>
+            Agrega tu primera casa
+          </button>
+        }
         @if (isPropertyDropdownOpen()) {
           <div class="absolute top-full left-0 right-0 mt-2 bg-surface-container-lowest rounded-2xl shadow-xl border border-outline-variant/10 overflow-hidden py-2 z-50 animate-in fade-in slide-in-from-top-2 duration-200">
             <div class="px-4 py-2 text-[10px] font-bold uppercase tracking-wider text-outline">Selecciona una casa</div>
@@ -42,7 +48,7 @@
               </div>
             }
             <div class="mt-2 pt-2 border-t border-outline-variant/10 px-4">
-              <button class="flex items-center justify-center gap-2 py-2 text-xs font-bold text-primary hover:bg-primary/5 rounded-lg transition-colors">
+              <button (click)="showAddNewHouseModal.set(true)" class="flex items-center justify-center gap-2 py-2 text-xs font-bold text-primary hover:bg-primary/5 rounded-lg transition-colors">
                 <mat-icon class="text-sm">add</mat-icon>
                 Agrega una nueva casa
               </button>
@@ -74,3 +80,7 @@
       </a>
     </div>
   </aside>
+
+  @if(showAddNewHouseModal()) {
+    <app-house-form (cancelled)="showAddNewHouseModal.set(false)" (saved)="createdHouse()"></app-house-form>
+  }

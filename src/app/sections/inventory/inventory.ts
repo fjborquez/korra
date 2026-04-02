@@ -39,7 +39,7 @@ export class Inventory {
 
   constructor() {
     effect(() => {
-      if (this.houseId() !== null) {
+      if (this.houseId()) {
         this.getList().subscribe(() => this.refreshFilters = true);
       }
     });
