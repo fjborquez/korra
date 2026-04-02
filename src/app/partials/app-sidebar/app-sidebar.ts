@@ -29,8 +29,14 @@ export class AppSidebar implements OnInit {
     const userId = this.loginService.getUserId();
     this.houseService.list(userId).subscribe((response: Response) => {
       const houses: House[] = response.message;
+      const defaultHouse = houses.filter((house: House) => house.persons.some((person: Person) => person.user !== null && person.user.id === userId && person.pivot?.is_default));
+
+      if (defaultHouse.length > 0) {
+        this.selectedHouse.set(defaultHouse[0]);
+      }
+
       this.houses.set(houses);
-      this.selectedHouse.set(houses.find((house: House) => house.is_active === 1 && house.persons.filter((person: Person) => person.user?.id === userId && person.pivot?.is_default === 1)) ?? null);
+      //this.selectedHouse.set();
       this.currentHouseId.emit(this.selectedHouse()?.id);
     });
   }
