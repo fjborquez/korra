@@ -10,10 +10,18 @@
         <div class="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center">
           <mat-icon class="text-primary">home</mat-icon>
         </div>
-        <div>
-          <h3 class="text-2xl font-headline font-extrabold text-on-surface leading-tight">Nueva casa</h3>
-          <p class="text-sm text-on-surface-variant">Configura un nuevo inventario</p>
-        </div>
+        @if (house) {
+          <div>
+            <h3 class="text-2xl font-headline font-extrabold text-on-surface leading-tight">Editar casa</h3>
+            <p class="text-sm text-on-surface-variant">Hace cambios en una casa</p>
+          </div>
+        }
+        @else {
+          <div>
+            <h3 class="text-2xl font-headline font-extrabold text-on-surface leading-tight">Nueva casa</h3>
+            <p class="text-sm text-on-surface-variant">Configura una nueva casa</p>
+          </div>
+        }
       </div>
     </div>
 

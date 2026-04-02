@@ -4,10 +4,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { HouseService } from '../../services/house.service';
 import { LoginService } from '../../services/login.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { HouseForm } from '../house-form/house-form';
 
 @Component({
   selector: 'app-house-info',
-  imports: [MatIconModule],
+  imports: [MatIconModule, HouseForm],
   templateUrl: './house-info.html',
   styleUrl: './house-info.css',
 })
@@ -18,7 +19,7 @@ export class HousesHouseInfo {
   houseService: HouseService = inject(HouseService);
   loginService: LoginService = inject(LoginService);
   matSnackBar: MatSnackBar = inject(MatSnackBar);
-
+  showHouseForm = signal(false);
 
   modalState = signal<{
     isOpen: boolean;
@@ -58,7 +59,7 @@ export class HousesHouseInfo {
     });
   }
 
-   openModal(item: House) {
+  openModal(item: House) {
     this.modalState.set({ isOpen: true, item });
   }
 
