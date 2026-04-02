@@ -10,8 +10,21 @@
   </div>
 
   <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8">
-    @for (house of houses(); track house.id) {
-      <app-house-info [house]="house" [defaultHouse]="defaultHouse()" (refreshList)="refreshList()"></app-house-info>
+    @if (isLoading()) {
+      @for (i of [1,2,3]; track $index) {
+        <div class="bg-white p-6 rounded-[2rem] border border-slate-100 shadow-sm animate-pulse-slow h-full">
+          <div class="aspect-square bg-slate-100 rounded-2xl mb-4"></div>
+          <div class="space-y-2">
+            <div class="h-6 w-3/4 bg-slate-100 rounded-full"></div>
+            <div class="h-4 w-1/2 bg-slate-100 rounded-full"></div>
+          </div>
+        </div>
+      }
+    }
+     @else {
+       @for (house of houses(); track house.id) {
+        <app-house-info [house]="house" [defaultHouse]="defaultHouse()" (refreshList)="refreshList()"></app-house-info>
+      }
     }
   </div>
   @if (showAddModal()) {
