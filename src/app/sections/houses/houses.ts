@@ -7,6 +7,7 @@ import { Response } from '../../interfaces/response.interface';
 import { Person } from '../../interfaces/person.interface';
 import { HousesHouseInfo } from "../../partials/house-info/house-info";
 import { HouseForm } from "../../partials/house-form/house-form";
+import { HouseSelectorService } from '../../services/house-selector.service';
 
 
 @Component({
@@ -18,6 +19,7 @@ import { HouseForm } from "../../partials/house-form/house-form";
 export class Houses implements OnInit {
   houseService: HouseService = inject(HouseService);
   loginService: LoginService = inject(LoginService);
+  houseSelectorService: HouseSelectorService = inject(HouseSelectorService);
   houses = signal<House[]>([]);
   defaultHouse = signal<House | null>(null);
   showAddModal = signal(false);
@@ -46,5 +48,7 @@ export class Houses implements OnInit {
 
   refreshList() {
     this.housesList();
+    this.houseSelectorService.emitRefresh();
+
   }
 }
