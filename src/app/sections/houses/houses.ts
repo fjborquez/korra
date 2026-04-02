@@ -41,8 +41,16 @@ export class Houses implements OnInit {
 
     this.houseService.list(userId).subscribe((response: Response) => {
       const houses = response.message as House[];
+      const defaultHouse = houses.filter((house: House) => house.persons.some((person: Person) => person.user !== null && person.user.id === userId && person.pivot?.is_default));
+
+      if (defaultHouse.length > 0) {
+        this.defaultHouse.set(defaultHouse[0]);
+      } else if (houses.length > 0) {
+        this.defaultHouse.set(houses[0]);
+      } else {
+        this.defaultHouse.set(null);
+      }
       this.houses.set(houses);
-      this.defaultHouse.set(houses.find((house: House) => house.persons.some((person: Person) => person.user.id === userId && person.pivot?.is_default === 1)) ?? null);
     });
   }
 
