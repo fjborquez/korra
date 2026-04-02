@@ -66,4 +66,9 @@ export class HousesHouseInfo {
   closeModal() {
     this.modalState.set({ isOpen: false, item: null });
   }
+
+  saved() {
+    this.showHouseForm.set(false)
+    this.refreshList.emit();
+  }
 }
