@@ -33,11 +33,11 @@ export class Login implements OnInit {
     const email = this.loginForm.get('email')?.value;
     const password = this.loginForm.get('password')?.value;
 
-    this.loginService.login({
-      email: email,
-      password: password
-    }).subscribe(() => {
-      this.router.navigate(['/inventory']);
+    this.router.navigate(['/loading-login'], {
+      state: {
+        email: email,
+        password: password
+      }
     });
   }
 }
