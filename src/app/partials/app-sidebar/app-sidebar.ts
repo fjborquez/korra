@@ -1,3 +1,4 @@
+import { HouseSelectorService } from './../../services/house-selector.service';
 import { LoginService } from './../../services/login.service';
 import { Component, EventEmitter, inject, OnInit, Output, signal } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
@@ -20,6 +21,7 @@ export class AppSidebar implements OnInit {
   houseService: HouseService = inject(HouseService);
   loginService: LoginService = inject(LoginService);
   router: Router = inject(Router);
+  houseSelectorService: HouseSelectorService = inject(HouseSelectorService);
 
   @Output() currentHouseId = new EventEmitter<number>();
   houses = signal<House[]>([]);
@@ -30,6 +32,9 @@ export class AppSidebar implements OnInit {
 
   ngOnInit() {
     this.getHouseList().subscribe();
+    this.houseSelectorService.consumeRefresh().subscribe(() => {
+      this.getHouseList().subscribe();
+    });
   }
 
   getHouseList() {
