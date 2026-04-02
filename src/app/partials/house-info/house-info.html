@@ -45,10 +45,12 @@
       <mat-icon class="text-lg">edit_square</mat-icon>
       Editar
     </button>
-    <button (click)="openModal(house)" class="flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-bold text-sm text-error/60 hover:text-error hover:bg-error/5 transition-all">
-      <mat-icon class="text-lg">delete</mat-icon>
-      Eliminar
-    </button>
+    @if (defaultHouse?.id !== house.id) {
+      <button (click)="openModal(house)" class="flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-bold text-sm text-error/60 hover:text-error hover:bg-error/5 transition-all">
+        <mat-icon class="text-lg">delete</mat-icon>
+        Eliminar
+      </button>
+    }
   </div>
 </div>
 
