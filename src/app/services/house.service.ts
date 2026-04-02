@@ -17,6 +17,10 @@ export class HouseService {
     return this.http.post(environment.backendUrl + `user/${userId}/houses`, params)
   }
 
+  edit(userId: number, houseId: number, params = {}) {
+    return this.http.put(environment.backendUrl + `user/${userId}/houses/${houseId}`, params);
+  }
+
   delete(userId: number, houseId: number) {
     return this.http.delete(environment.backendUrl + `user/${userId}/houses/${houseId}`);
 

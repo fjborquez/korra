@@ -6,12 +6,12 @@ import { LoginService } from '../../services/login.service';
 import { Response } from '../../interfaces/response.interface';
 import { Person } from '../../interfaces/person.interface';
 import { HousesHouseInfo } from "../../partials/house-info/house-info";
-import { AddHouse } from "../../partials/add-house/add-house";
+import { HouseForm } from "../../partials/house-form/house-form";
 
 
 @Component({
   selector: 'app-houses',
-  imports: [MatIconModule, HousesHouseInfo, AddHouse],
+  imports: [MatIconModule, HousesHouseInfo, HouseForm],
   templateUrl: './houses.html',
   styleUrl: './houses.css',
 })

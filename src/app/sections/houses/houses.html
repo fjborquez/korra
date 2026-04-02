@@ -15,6 +15,6 @@
     }
   </div>
   @if (showAddModal()) {
-    <app-add-house (cancelled)="showAddModal.set(false)" (saved)="showAddModal.set(false)"></app-add-house>
+    <app-house-form (cancelled)="showAddModal.set(false)" (saved)="showAddModal.set(false)"></app-house-form>
   }
 </div>
