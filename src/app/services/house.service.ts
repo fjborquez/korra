@@ -23,6 +23,5 @@ export class HouseService {
 
   delete(userId: number, houseId: number) {
     return this.http.delete(environment.backendUrl + `user/${userId}/houses/${houseId}`);
-
   }
 }

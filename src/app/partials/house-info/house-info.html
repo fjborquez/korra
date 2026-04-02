@@ -90,5 +90,5 @@
 }
 
 @if (showHouseForm()) {
-  <app-house-form (cancelled)="showHouseForm.set(false)" (saved)="showHouseForm.set(false)" [house]="house"></app-house-form>
+  <app-house-form (cancelled)="showHouseForm.set(false)" (saved)="saved()" [house]="house"></app-house-form>
 }
