@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, output, OnInit, signal, Input, SimpleChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, output, OnInit, signal, Input } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { HouseService } from '../../services/house.service';
 import { MatIconModule } from '@angular/material/icon';

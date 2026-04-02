@@ -35,6 +35,7 @@ export class Inventory {
   refreshFilters = false;
   statusFilter = 'all';
   categoryFilter = '';
+  isLoading = signal(true);
 
   constructor() {
     effect(() => {
@@ -87,6 +88,7 @@ export class Inventory {
         ));
         this.status.set([...new Set(products.map((product: ProductInInventory) => product.product_status.find((status: InventoryProductStatus) =>
           status.pivot?.is_active === 1)?.description ?? ''))]);
+        this.isLoading.set(false);
       }));
   }
 
