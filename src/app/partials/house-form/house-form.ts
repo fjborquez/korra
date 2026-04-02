@@ -7,6 +7,7 @@ import { City } from '../../interfaces/city.interface';
 import { Response } from '../../interfaces/response.interface';
 import { LoginService } from '../../services/login.service';
 import { House } from '../../interfaces/house.interface';
+import { HouseSelectorService } from '../../services/house-selector.service';
 
 @Component({
   selector: 'app-house-form',
@@ -23,6 +24,7 @@ export class HouseForm implements OnInit {
   private houseService = inject(HouseService);
   private cityService = inject(CityService);
   private loginService = inject(LoginService);
+  private houseSelectorService = inject(HouseSelectorService);
   cancelled = output<void>();
   saved = output<void>();
   @Input() house!: House | null;
@@ -61,13 +63,18 @@ export class HouseForm implements OnInit {
           description: formValue.description,
           city_id: formValue.city_id,
           is_default: !!formValue.is_default,
-        }).subscribe(() => this.saved.emit());
+        }).subscribe(() => {
+          this.saved.emit()
+          this.houseSelectorService.emitRefresh();});
       } else {
         this.houseService.add(userId, {
           description: formValue.description,
           city_id: formValue.city_id,
           is_default: !!formValue.is_default,
-        }).subscribe(() => this.saved.emit());
+        }).subscribe(() => {
+          this.saved.emit();
+          this.houseSelectorService.emitRefresh();
+        });
       }
     }
   }
