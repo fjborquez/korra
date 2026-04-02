@@ -23,6 +23,7 @@ export class Houses implements OnInit {
   houses = signal<House[]>([]);
   defaultHouse = signal<House | null>(null);
   showAddModal = signal(false);
+  isLoading = signal(false);
 
   constructor() {
     effect(() => {
@@ -38,6 +39,7 @@ export class Houses implements OnInit {
 
   housesList() {
     const userId = this.loginService.getUserId();
+    this.isLoading.set(true);
 
     this.houseService.list(userId).subscribe((response: Response) => {
       const houses = response.message as House[];
@@ -51,6 +53,7 @@ export class Houses implements OnInit {
         this.defaultHouse.set(null);
       }
       this.houses.set(houses);
+      this.isLoading.set(false);
     });
   }
 
