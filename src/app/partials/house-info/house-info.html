@@ -34,7 +34,7 @@
           <span class="text-xs font-semibold text-on-surface">{{ person.name }}</span>
         </div>
       }
-      <div class="flex items-center justify-center h-8 w-8 rounded-full bg-surface-container-high text-on-surface-variant text-[10px] font-bold">
+      <div tabindex="0" (click)="this.showPersonForm.set(true)" (keydown)="this.showPersonForm.set(true)" class="flex items-center justify-center h-8 w-8 rounded-full bg-surface-container-high text-on-surface-variant text-[10px] font-bold">
         <mat-icon class="text-lg">add</mat-icon>
       </div>
     </div>
@@ -93,4 +93,8 @@
 
 @if (showHouseForm()) {
   <app-house-form (cancelled)="showHouseForm.set(false)" (saved)="saved()" [house]="house"></app-house-form>
+}
+
+@if (showPersonForm()) {
+  <app-resident-form (cancelled)="showPersonForm.set(false)" (saved)="savedPerson()" [person]="person" [houseId]="house.id"></app-resident-form>
 }

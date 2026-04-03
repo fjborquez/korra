@@ -43,7 +43,7 @@ export class HouseForm implements OnInit {
       this.houseForm.patchValue({
         description: this.house?.description ?? '',
         city_id: this.house?.city?.id.toString() ?? '',
-        is_default: this.house?.persons.some((person) => person.user.id === this.loginService.getUserId() && person.pivot?.is_default === 1) ?? false,
+        is_default: this.house?.persons.some((person) => person.user?.id === this.loginService.getUserId() && person.pivot?.is_default === 1) ?? false,
       });
     });
   }

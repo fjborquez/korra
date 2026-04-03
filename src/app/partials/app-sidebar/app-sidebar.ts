@@ -43,7 +43,7 @@ export class AppSidebar implements OnInit {
     return this.houseService.list(userId).pipe(
       tap((response: Response) => {
         const houses: House[] = response.message;
-        const defaultHouse = houses.filter((house: House) => house.persons.some((person: Person) => person.user !== null && person.user.id === userId && person.pivot?.is_default));
+        const defaultHouse = houses.filter((house: House) => house.persons.some((person: Person) => person.user !== null && person.user?.id === userId && person.pivot?.is_default));
 
         if (defaultHouse.length > 0) {
           this.selectedHouse.set(defaultHouse[0]);

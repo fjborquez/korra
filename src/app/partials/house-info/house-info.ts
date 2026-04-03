@@ -5,10 +5,12 @@ import { HouseService } from '../../services/house.service';
 import { LoginService } from '../../services/login.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { HouseForm } from '../house-form/house-form';
+import { ResidentForm } from '../resident-form/resident-form';
+import { Person } from '../../interfaces/person.interface';
 
 @Component({
   selector: 'app-house-info',
-  imports: [MatIconModule, HouseForm],
+  imports: [MatIconModule, HouseForm, ResidentForm],
   templateUrl: './house-info.html',
   styleUrl: './house-info.css',
 })
@@ -20,6 +22,8 @@ export class HousesHouseInfo {
   loginService: LoginService = inject(LoginService);
   matSnackBar: MatSnackBar = inject(MatSnackBar);
   showHouseForm = signal(false);
+  showPersonForm = signal(false);
+  person: Person | null = null;
 
   modalState = signal<{
     isOpen: boolean;
@@ -69,6 +73,11 @@ export class HousesHouseInfo {
 
   saved() {
     this.showHouseForm.set(false)
+    this.refreshList.emit();
+  }
+
+  savedPerson() {
+    this.showPersonForm.set(false)
     this.refreshList.emit();
   }
 }
