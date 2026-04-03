@@ -7,5 +7,5 @@ export interface Person {
   lastname: string;
   date_of_birth: string;
   pivot?: PersonHousePivot;
-  user: User;
+  user?: User;
 }

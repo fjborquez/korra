@@ -1,0 +1,80 @@
+<div class="fixed inset-0 z-[100] flex items-center justify-center p-4">
+  <!-- Backdrop -->
+  <div class="absolute inset-0 bg-surface-dim/60 glass-effect backdrop-blur-md" (click)="handleCancel()" (keydown.escape)="handleCancel()" role="button" tabindex="0" aria-label="Cerrar modal"></div>
+
+  <!-- Modal Content -->
+  <div class="relative bg-surface-container-lowest w-full max-w-lg rounded-[2rem] shadow-2xl overflow-hidden border border-white/20 animate-in fade-in zoom-in duration-300">
+    <!-- Modal Header -->
+    <div class="px-8 pt-10 pb-6">
+      <div class="flex items-center gap-3 mb-2">
+        <div class="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center">
+          <mat-icon class="text-primary">home</mat-icon>
+        </div>
+        @if (person) {
+          <div>
+            <h3 class="text-2xl font-headline font-extrabold text-on-surface leading-tight">Editar residente</h3>
+            <p class="text-sm text-on-surface-variant">Hace cambios en un residente</p>
+          </div>
+        }
+        @else {
+          <div>
+            <h3 class="text-2xl font-headline font-extrabold text-on-surface leading-tight">Nuevo residente</h3>
+            <p class="text-sm text-on-surface-variant">Agrega un nuevo residente</p>
+          </div>
+        }
+      </div>
+    </div>
+
+    <form [formGroup]="residentForm" (ngSubmit)="onSubmit()" class="px-8 pb-10 space-y-6">
+      <div class="space-y-2">
+        <label for="name" class="text-xs font-bold uppercase tracking-wider text-primary ml-1">Nombre</label>
+        <input
+          id="name"
+          formControlName="name"
+          class="w-full bg-surface-container-high border-none rounded-xl px-4 py-3.5 focus:ring-2 focus:ring-primary/20 text-on-surface placeholder:text-outline transition-all"
+          placeholder="Ej: Juan"
+          type="text"
+        />
+      </div>
+
+      <div class="space-y-2">
+        <label for="lastname" class="text-xs font-bold uppercase tracking-wider text-primary ml-1">Apellido</label>
+        <input
+          id="lastname"
+          formControlName="lastname"
+          class="w-full bg-surface-container-high border-none rounded-xl px-4 py-3.5 focus:ring-2 focus:ring-primary/20 text-on-surface placeholder:text-outline transition-all"
+          placeholder="Ej: Pérez"
+          type="text"
+        />
+      </div>
+
+      <div class="space-y-2">
+        <label for="date_of_birth" class="text-xs font-bold uppercase tracking-wider text-primary ml-1">Fecha de nacimiento</label>
+        <input
+          id="date_of_birth"
+          formControlName="date_of_birth"
+          class="w-full bg-surface-container-high border-none rounded-xl px-4 py-3.5 focus:ring-2 focus:ring-primary/20 text-on-surface placeholder:text-outline transition-all"
+          placeholder="Ej: 01/01/1990"
+          type="date"
+        />
+      </div>
+
+      <div class="flex gap-4 pt-4">
+        <button
+          type="button"
+          (click)="handleCancel()"
+          class="flex-1 px-6 py-4 rounded-full font-bold text-on-surface-variant hover:bg-surface-container-high transition-all text-center"
+        >
+          Cancelar
+        </button>
+        <button
+          type="submit"
+          [disabled]="residentForm.invalid"
+          class="flex-1 px-6 py-4 rounded-full font-bold bg-primary text-on-primary shadow-lg shadow-primary/20 hover:scale-[1.02] active:scale-[0.98] transition-all text-center disabled:opacity-50 disabled:scale-100"
+        >
+          Guardar residente
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
