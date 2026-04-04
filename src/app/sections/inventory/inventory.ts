@@ -12,12 +12,13 @@ import { InventoryProduct } from '../../partials/inventory-product/inventory-pro
 import { InventoryProductStatus } from '../../interfaces/inventory-product-status.interface';
 import { Response } from '../../interfaces/response.interface';
 import { Statistics } from '../../interfaces/statistics.interface';
+import { InventoryForm } from '../../partials/inventory-form/inventory-form';
 
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, MatIconModule, InventoryProduct, InventoryFilters, SmartInsight],
+  imports: [CommonModule, MatIconModule, InventoryProduct, InventoryFilters, SmartInsight, InventoryForm],
   templateUrl: './inventory.html',
   styleUrls: ['./inventory.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -36,6 +37,7 @@ export class Inventory {
   statusFilter = 'all';
   categoryFilter = '';
   isLoading = signal(true);
+  showInventoryForm = signal(false);
 
   constructor() {
     effect(() => {
