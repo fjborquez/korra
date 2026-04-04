@@ -1,4 +1,4 @@
-import { Component, EventEmitter, inject, Input, Output, signal } from '@angular/core';
+import { Component, EventEmitter, inject, Input, Output, Signal, signal } from '@angular/core';
 import { House } from '../../interfaces/house.interface';
 import { MatIconModule } from '@angular/material/icon';
 import { HouseService } from '../../services/house.service';
@@ -23,7 +23,7 @@ export class HousesHouseInfo {
   matSnackBar: MatSnackBar = inject(MatSnackBar);
   showHouseForm = signal(false);
   showPersonForm = signal(false);
-  person: Person | null = null;
+  resident = signal<Person | null>(null);
 
   modalState = signal<{
     isOpen: boolean;
@@ -79,5 +79,10 @@ export class HousesHouseInfo {
   savedPerson() {
     this.showPersonForm.set(false)
     this.refreshList.emit();
+  }
+
+  editResident(resident: Person) {
+    this.resident.set(resident);
+    this.showPersonForm.set(true);
   }
 }
