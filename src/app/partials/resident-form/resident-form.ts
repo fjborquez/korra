@@ -1,5 +1,5 @@
 import { ResidentService } from '../../services/resident.service';
-import { ChangeDetectionStrategy, Component, inject, Input, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, Input, OnInit, output } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { Person } from '../../interfaces/person.interface';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -16,7 +16,7 @@ import { dateToChileanFormat } from '../../functions/date-to-chilean-format.func
   `],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ResidentForm {
+export class ResidentForm implements OnInit {
   private fb = inject(FormBuilder);
   private loginService: LoginService = inject(LoginService);
   private residentService: ResidentService = inject(ResidentService);
@@ -29,7 +29,17 @@ export class ResidentForm {
     date_of_birth: ['', [Validators.required]],
   });
   @Input() houseId!: number;
-  @Input() person: Person | null = null;
+  @Input() resident!: Person | null;
+
+  ngOnInit(): void {
+    if (this.resident) {
+      this.residentForm.patchValue({
+        name: this.resident.name ?? '',
+        lastname: this.resident.lastname ?? '',
+        date_of_birth: this.resident.date_of_birth ?? '',
+      });
+    }
+  }
 
   handleCancel() {
     this.cancelled.emit();
@@ -46,8 +56,8 @@ export class ResidentForm {
         date_of_birth: dateToChileanFormat(formValue.date_of_birth ?? '')
       };
 
-      if (this.person) {
-        this.residentService.edit(userId, this.person?.id, this.houseId, residentData).subscribe(() => {
+      if (this.resident) {
+        this.residentService.edit(userId, this.houseId, this.resident?.id, residentData).subscribe(() => {
           this.saved.emit()
         });
       } else {
