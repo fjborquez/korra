@@ -8,11 +8,12 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { InventoryProduct as ProductInInventory } from '../../interfaces/inventory-product.interface';
 import { InventoryProductStatus } from '../../interfaces/inventory-product-status.interface';
 import { getTranslatedCategory } from '../../functions/get-translated-category.function'
+import { InventoryForm } from "../inventory-form/inventory-form";
 
 
 @Component({
   selector: 'app-inventory-product',
-  imports: [MatIconModule, RouterLink, CommonModule],
+  imports: [MatIconModule, RouterLink, CommonModule, InventoryForm],
   templateUrl: './inventory-product.html',
   styleUrl: './inventory-product.css',
 })
@@ -29,6 +30,7 @@ export class InventoryProduct implements OnInit {
   houseId = inject(ROUTER_OUTLET_DATA) as Signal<number>;
   expirationDate!: Date;
   purchaseDate!: Date;
+  showInventoryForm = signal(false);
 
   modalState = signal<{
     isOpen: boolean;
@@ -164,5 +166,9 @@ export class InventoryProduct implements OnInit {
 
   getTranslatedCategory(category: string) {
     return getTranslatedCategory(category);
+  }
+
+  openInventoryForm() {
+    this.showInventoryForm.set(true);
   }
 }

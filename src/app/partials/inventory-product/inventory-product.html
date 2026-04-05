@@ -36,6 +36,9 @@
     </p>
     <div class="flex items-center justify-between">
       <div class="flex items-center gap-2">
+        <button (click)="openInventoryForm()" class="w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center text-on-surface-variant hover:bg-primary hover:text-on-primary transition-colors">
+          <mat-icon class="text-sm">edit</mat-icon>
+        </button>
         <button (click)="openModal('consume', product)" class="w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center text-on-surface-variant hover:bg-primary hover:text-on-primary transition-colors">
           <mat-icon class="text-sm">restaurant</mat-icon>
         </button>
@@ -93,3 +96,8 @@
     </div>
   </div>
 }
+
+@if (showInventoryForm()) {
+  <app-inventory-form [houseId]="houseId()" (cancelled)="showInventoryForm.set(false)" (saved)="showInventoryForm.set(false)" [inventoryProduct]="product"></app-inventory-form>
+}
+
