@@ -9,6 +9,10 @@ import { Response } from '../interfaces/response.interface';
 export class InventoryService {
   private http = inject(HttpClient);
 
+  add(userId: number, houseId: number, params = {}) {
+    return this.http.post(environment.backendUrl + `user/${userId}/houses/${houseId}/inventory`, params)
+  }
+
   list(userId: number, houseId: number) {
     return this.http.get<Response>(environment.backendUrl + `user/${userId}/houses/${houseId}/inventory`);
   }
