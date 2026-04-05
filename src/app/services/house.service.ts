@@ -9,6 +9,10 @@ import { Response } from '../interfaces/response.interface';
 export class HouseService {
   private http: HttpClient = inject(HttpClient);
 
+  get(userId: number, houseId: number) {
+    return this.http.get<Response>(environment.backendUrl + `user/${userId}/houses/${houseId}`);
+  }
+
   list(userId: number) {
     return this.http.get<Response>(environment.backendUrl + `user/${userId}/houses`);
   }

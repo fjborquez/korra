@@ -1,3 +1,6 @@
+import { InventoryService } from './../../services/inventory.service';
+import { UnitOfMeasurement } from './../../interfaces/unit-of-measurement.interface';
+import { InventoryProduct } from './../../interfaces/inventory-product.interface';
 import { Component, inject, Input, OnInit, output, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
@@ -10,7 +13,8 @@ import { map, Observable, startWith } from 'rxjs';
 import { existsForAutocomplete } from '../../functions/exists-for-autocomplete.function';
 import { AsyncPipe } from '@angular/common';
 import { UnitOfMeasurementService } from '../../services/unit-of-measurement.service';
-import { UnitOfMeasurement } from '../../interfaces/unit-of-measurement.interface';
+import { House } from '../../interfaces/house.interface';
+import { HouseService } from '../../services/house.service';
 
 @Component({
   selector: 'app-inventory-form',
@@ -23,25 +27,32 @@ export class InventoryForm implements OnInit {
   private loginService = inject(LoginService);
   private productCatalogService = inject(ProductCatalogService);
   private unitOfMeasurementService = inject(UnitOfMeasurementService);
+  private inventoryService = inject(InventoryService);
+  private houseService = inject(HouseService);
   @Input() houseId!: number;
+  @Input() inventoryProduct?: InventoryProduct | null;
   cancelled = output<void>();
   inventoryForm = this.fb.group({
-    product: ['', [Validators.required]],
+    product: [null as ProductCatalog | string | null, [Validators.required]],
     quantity: [0, [Validators.required, Validators.min(0)]],
-    unit_of_measurement: ['', [Validators.required]],
+    unit_of_measurement: [null as UnitOfMeasurement | string | null, [Validators.required]],
     purchase_date: [new Date()],
     expiration_date: [new Date()],
   });
   productsCatalog!: Observable<ProductCatalog[]>;
   unitsOfMeasurement = signal<UnitOfMeasurement[]>([])
+  saved = output<void>();
 
   ngOnInit() {
     this.productCatalogService.list().subscribe((response: Response) => {
       const products = response.message.flat() as ProductCatalog[];
       this.productsCatalog = this.inventoryForm.get('product')!.valueChanges.pipe(
-        startWith(''),
-        map((value: string | null) => products.filter((product: ProductCatalog) => existsForAutocomplete(product.type.description, value || '')
-          || existsForAutocomplete(product.presentation?.description, value || '') || existsForAutocomplete(product.brand?.name, value || ''))),
+        startWith('' as string | ProductCatalog | null),
+        map((value: string | ProductCatalog | null) => {
+          const filterValue = typeof value === 'string' ? value : value ? this.displayProductCatalog(value) : '';
+          return products.filter((product: ProductCatalog) => existsForAutocomplete(product.type.description, filterValue)
+            || existsForAutocomplete(product.presentation?.description, filterValue) || existsForAutocomplete(product.brand?.name, filterValue));
+        }),
       )
     });
 
@@ -57,13 +68,77 @@ export class InventoryForm implements OnInit {
 
   onSubmit() {
     const userId = this.loginService.getUserId();
+    this.houseService.get(userId, this.houseId).subscribe((response: Response) => {
+      const house = response.message as House;
+
+      if (this.inventoryForm.valid) {
+        const formValue = this.inventoryForm.value;
+        const product = formValue.product as ProductCatalog;
+        const unitOfMeasurement = formValue.unit_of_measurement as UnitOfMeasurement;
+
+        if (this.inventoryProduct) {
+          /*this.houseService.edit(userId, this.house.id, {
+            description: formValue.description,
+            city_id: formValue.city_id,
+            is_default: !!formValue.is_default,
+          }).subscribe(() => {
+            this.saved.emit()
+            this.houseSelectorService.emitRefresh();});*/
+        } else {
+          this.inventoryService.add(userId, this.houseId, {
+            house_id: this.houseId,
+            house_description: house.description,
+            quantity: formValue.quantity,
+            uom_id: unitOfMeasurement.id,
+            uom_description: unitOfMeasurement.description,
+            uom_abbreviation: unitOfMeasurement.abbreviation,
+            purchase_date: formValue.purchase_date,
+            expiration_date: formValue.expiration_date,
+            catalog_id: product.id,
+            catalog_description: this.saveProductCatalogText(product),
+            brand_id: product.brand?.id,
+            brand_name: product.brand?.name,
+            category_id: product.category?.id,
+            category_name: product.category?.name
+          }).subscribe(() => {
+            this.saved.emit();
+          });
+        }
+      }
+    });
   }
 
   displayProductCatalog(productCatalog: ProductCatalog): string {
+    if (productCatalog === null) {
+      return '';
+    }
+
     let productName = productCatalog.type ? productCatalog.type.description : '';
     productName += productCatalog.presentation ? ' ' + productCatalog.presentation.description : '';
     productName += productCatalog.brand ? ' ' + productCatalog.brand.name : '';
     return productName;
+  }
+
+   saveProductCatalogText(productCatalog: ProductCatalog): string {
+    let productCatalogText = '';
+
+    if (Object.keys(productCatalog).length === 0) {
+      return productCatalogText;
+    }
+
+    if (productCatalog.type.description) {
+      productCatalogText += productCatalog.type.description;
+      productCatalogText += ' ';
+    }
+
+    if (productCatalog.presentation?.description) {
+      productCatalogText += productCatalog.presentation.description;
+      productCatalogText += ' ';
+    }
+
+    productCatalogText = productCatalogText.trim();
+
+    return productCatalogText;
   }
 }
 
