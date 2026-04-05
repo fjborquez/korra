@@ -50,6 +50,16 @@ export class InventoryForm implements OnInit {
         startWith('' as string | ProductCatalog | null),
         map((value: string | ProductCatalog | null) => {
           const filterValue = typeof value === 'string' ? value : value ? this.displayProductCatalog(value) : '';
+
+          if (this.inventoryProduct && filterValue === '') {
+            const currentProduct = products.find(product => product.id === this.inventoryProduct!.catalog_id);
+            if (currentProduct) {
+              this.inventoryForm.patchValue({
+                product: currentProduct
+              });
+            }
+          }
+
           return products.filter((product: ProductCatalog) => existsForAutocomplete(product.type.description, filterValue)
             || existsForAutocomplete(product.presentation?.description, filterValue) || existsForAutocomplete(product.brand?.name, filterValue));
         }),
@@ -59,7 +69,24 @@ export class InventoryForm implements OnInit {
     this.unitOfMeasurementService.list().subscribe((response: Response) => {
       const units = response.message as UnitOfMeasurement[];
       this.unitsOfMeasurement.set(units);
+
+      if (this.inventoryProduct) {
+        const unitOfMeasurement = units.find(unit => unit.id === this.inventoryProduct!.uom_id);
+        if (unitOfMeasurement) {
+          this.inventoryForm.patchValue({
+            unit_of_measurement: unitOfMeasurement
+          });
+        }
+      }
     });
+
+    if (this.inventoryProduct) {
+      this.inventoryForm.patchValue({
+        quantity: this.inventoryProduct.quantity,
+        purchase_date: this.inventoryProduct.purchase_date,
+        expiration_date: this.inventoryProduct.expiration_date,
+      });
+    }
   }
 
   handleCancel() {
