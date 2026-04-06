@@ -13,6 +13,10 @@ export class InventoryService {
     return this.http.post(environment.backendUrl + `user/${userId}/houses/${houseId}/inventory`, params)
   }
 
+  edit(userId: number, houseId: number, inventoryId: number, params = {}) {
+    return this.http.put(environment.backendUrl + `user/${userId}/houses/${houseId}/inventory/${inventoryId}`, params)
+  }
+
   list(userId: number, houseId: number) {
     return this.http.get<Response>(environment.backendUrl + `user/${userId}/houses/${houseId}/inventory`);
   }

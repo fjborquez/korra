@@ -10,10 +10,18 @@
         <div class="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center">
           <mat-icon class="text-primary">inventory</mat-icon>
         </div>
-        <div>
+        @if (inventoryProduct) {
+          <div>
+            <h3 class="text-2xl font-headline font-extrabold text-on-surface leading-tight">Edita un producto</h3>
+            <p class="text-sm text-on-surface-variant">Edita un producto existente en tu inventario</p>
+          </div>
+        }
+        @else {
+          <div>
             <h3 class="text-2xl font-headline font-extrabold text-on-surface leading-tight">Nuevo producto</h3>
             <p class="text-sm text-on-surface-variant">Agrega un nuevo producto a tu inventario</p>
           </div>
+        }
       </div>
     </div>
 

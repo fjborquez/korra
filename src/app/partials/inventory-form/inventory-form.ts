@@ -104,13 +104,24 @@ export class InventoryForm implements OnInit {
         const unitOfMeasurement = formValue.unit_of_measurement as UnitOfMeasurement;
 
         if (this.inventoryProduct) {
-          /*this.houseService.edit(userId, this.house.id, {
-            description: formValue.description,
-            city_id: formValue.city_id,
-            is_default: !!formValue.is_default,
+          this.inventoryService.edit(userId, this.houseId, this.inventoryProduct.id, {
+            house_id: this.houseId,
+            house_description: house.description,
+            quantity: formValue.quantity,
+            uom_id: unitOfMeasurement.id,
+            uom_description: unitOfMeasurement.description,
+            uom_abbreviation: unitOfMeasurement.abbreviation,
+            purchase_date: formValue.purchase_date,
+            expiration_date: formValue.expiration_date,
+            catalog_id: product.id,
+            catalog_description: this.saveProductCatalogText(product),
+            brand_id: product.brand?.id,
+            brand_name: product.brand?.name,
+            category_id: product.category?.id,
+            category_name: product.category?.name
           }).subscribe(() => {
-            this.saved.emit()
-            this.houseSelectorService.emitRefresh();});*/
+            this.saved.emit();
+          });
         } else {
           this.inventoryService.add(userId, this.houseId, {
             house_id: this.houseId,
