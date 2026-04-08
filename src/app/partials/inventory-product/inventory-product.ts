@@ -1,6 +1,6 @@
 import { Component, inject, Input, OnInit, Output, Signal, signal, EventEmitter } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
-import { ROUTER_OUTLET_DATA, RouterLink } from '@angular/router';
+import { ROUTER_OUTLET_DATA } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { InventoryService } from '../../services/inventory.service';
 import { LoginService } from '../../services/login.service';
@@ -13,7 +13,7 @@ import { InventoryForm } from "../inventory-form/inventory-form";
 
 @Component({
   selector: 'app-inventory-product',
-  imports: [MatIconModule, RouterLink, CommonModule, InventoryForm],
+  imports: [MatIconModule, CommonModule, InventoryForm],
   templateUrl: './inventory-product.html',
   styleUrl: './inventory-product.css',
 })
