@@ -10,10 +10,11 @@ import { Response } from '../../interfaces/response.interface';
 import { Person } from '../../interfaces/person.interface';
 import { HouseForm } from '../house-form/house-form';
 import { tap } from 'rxjs';
+import { Configuration } from '../configuration/configuration';
 
 @Component({
   selector: 'app-sidebar',
-  imports: [MatIconModule, CommonModule, RouterLink, RouterLinkActive, HouseForm],
+  imports: [MatIconModule, CommonModule, RouterLink, RouterLinkActive, HouseForm, Configuration],
   templateUrl: './app-sidebar.html',
   styleUrl: './app-sidebar.css',
 })
@@ -29,6 +30,7 @@ export class AppSidebar implements OnInit {
   selectedHouse = signal<House | null>(null);
   showHousesSelector = signal(false);
   showAddNewHouseModal = signal(false);
+  showConfigModal = signal(false);
 
   ngOnInit() {
     this.getHouseList().subscribe();
@@ -78,5 +80,10 @@ export class AppSidebar implements OnInit {
   createdHouse() {
     this.showAddNewHouseModal.set(false);
     this.getHouseList().subscribe();
+  }
+
+  logout() {
+    this.loginService.logout();
+    this.router.navigate(['/login']);
   }
 }
