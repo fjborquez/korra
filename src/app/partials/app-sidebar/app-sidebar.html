@@ -86,5 +86,5 @@
 }
 
 @if(showConfigModal()) {
-  <app-configuration (cancelled)="showConfigModal.set(false)"></app-configuration>
+  <app-configuration (cancelled)="showConfigModal.set(false)" (saved)="showConfigModal.set(false)"></app-configuration>
 }
