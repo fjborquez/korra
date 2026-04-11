@@ -1,53 +1,67 @@
 <div class="max-w-7xl mx-auto py-10">
-  <section class="mb-10">
-    <div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
+  @if (houseId()) {
+    <section class="mb-10">
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
+        <div>
+          <h2 class="text-4xl font-extrabold text-on-surface tracking-tight mb-2 font-headline">Recién surtido.</h2>
+        </div>
+        <button tabindex="0" (click)="showInventoryForm.set(true)" (keydown)="showInventoryForm.set(true)" class="bg-primary text-on-primary px-8 py-4 rounded-full font-bold flex items-center gap-2 hover:scale-105 active:scale-95 transition-transform shadow-lg shadow-primary/20">
+          <mat-icon>add</mat-icon>
+          Agregar producto
+        </button>
+      </div>
       <div>
-        <h2 class="text-4xl font-extrabold text-on-surface tracking-tight mb-2 font-headline">Recién surtido.</h2>
+        <p class="text-on-surface-variant max-w-md">Tienes {{ products().length }} productos en {{ categories().length }} categorias. {{ immediatlyAttention().length }} productos requieren tu atención inmediata.</p>
       </div>
-      <button tabindex="0" (click)="showInventoryForm.set(true)" (keydown)="showInventoryForm.set(true)" class="bg-primary text-on-primary px-8 py-4 rounded-full font-bold flex items-center gap-2 hover:scale-105 active:scale-95 transition-transform shadow-lg shadow-primary/20">
-        <mat-icon>add</mat-icon>
-        Agregar producto
-      </button>
-    </div>
-    <div>
-      <p class="text-on-surface-variant max-w-md">Tienes {{ products().length }} productos en {{ categories().length }} categorias. {{ immediatlyAttention().length }} productos requieren tu atención inmediata.</p>
-    </div>
-  </section>
+    </section>
 
-  <app-inventory-filters [refreshFilters]="refreshFilters" [status]="status()" [categories]="categories()" (filterByStatus)="filterByStatusChanged($event)" (filterByCategory)="filterByCategoryChanged($event)"></app-inventory-filters>
+    <app-inventory-filters [refreshFilters]="refreshFilters" [status]="status()" [categories]="categories()" (filterByStatus)="filterByStatusChanged($event)" (filterByCategory)="filterByCategoryChanged($event)"></app-inventory-filters>
 
-  <!-- Grid -->
-  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-    @if (isLoading()) {
-      <div class="lg:col-span-2 bg-slate-100 p-10 rounded-[2.5rem] flex flex-col justify-center min-h-[400px] animate-pulse-slow">
-        <div class="space-y-4">
-          <div class="h-3 w-24 bg-slate-200 rounded-full"></div>
-          <div class="space-y-2">
-            <div class="h-12 w-full bg-slate-200 rounded-full"></div>
-            <div class="h-12 w-2/3 bg-slate-200 rounded-full"></div>
+    <!-- Grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+      @if (isLoading()) {
+        <div class="lg:col-span-2 bg-slate-100 p-10 rounded-[2.5rem] flex flex-col justify-center min-h-[400px] animate-pulse-slow">
+          <div class="space-y-4">
+            <div class="h-3 w-24 bg-slate-200 rounded-full"></div>
+            <div class="space-y-2">
+              <div class="h-12 w-full bg-slate-200 rounded-full"></div>
+              <div class="h-12 w-2/3 bg-slate-200 rounded-full"></div>
+            </div>
           </div>
         </div>
-      </div>
-      @for (i of [1,2]; track $index) {
-        <div class="bg-white p-6 rounded-[2rem] border border-slate-100 shadow-sm animate-pulse-slow h-full">
-          <div class="aspect-square bg-slate-100 rounded-2xl mb-4"></div>
-          <div class="space-y-2">
-            <div class="h-6 w-3/4 bg-slate-100 rounded-full"></div>
-            <div class="h-4 w-1/2 bg-slate-100 rounded-full"></div>
+        @for (i of [1,2]; track $index) {
+          <div class="bg-white p-6 rounded-[2rem] border border-slate-100 shadow-sm animate-pulse-slow h-full">
+            <div class="aspect-square bg-slate-100 rounded-2xl mb-4"></div>
+            <div class="space-y-2">
+              <div class="h-6 w-3/4 bg-slate-100 rounded-full"></div>
+              <div class="h-4 w-1/2 bg-slate-100 rounded-full"></div>
+            </div>
           </div>
+        }
+      }
+      @else {
+        <app-smart-insight [statistics]="statistics()"></app-smart-insight>
+
+        @for (product of productsToShow(); track product.id) {
+          <app-inventory-product [product]="product" (refreshList)="refreshList()"></app-inventory-product>
+        }
+      }
+    </div>
+    @if (showInventoryForm()) {
+      <app-inventory-form [houseId]="houseId()" (cancelled)="showInventoryForm.set(false)" (saved)="showInventoryForm.set(false)"></app-inventory-form>
+    }
+  }
+  @else {
+    <section class="mb-10">
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
+        <div>
+          <h2 class="text-4xl font-extrabold text-on-surface tracking-tight mb-2 font-headline">Sin inventario.</h2>
         </div>
-      }
-    }
-    @else {
-      <app-smart-insight [statistics]="statistics()"></app-smart-insight>
+      </div>
+      <div>
+        <p class="text-on-surface-variant max-w-md">Agrega tu primera casa para poder gestionar su inventario.</p>
+      </div>
+    </section>
+  }
 
-      @for (product of productsToShow(); track product.id) {
-        <app-inventory-product [product]="product" (refreshList)="refreshList()"></app-inventory-product>
-      }
-    }
-  </div>
-</div>
 
-@if (showInventoryForm()) {
-  <app-inventory-form [houseId]="houseId()" (cancelled)="showInventoryForm.set(false)" (saved)="showInventoryForm.set(false)"></app-inventory-form>
-}
