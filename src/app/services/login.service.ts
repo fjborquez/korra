@@ -70,4 +70,8 @@ export class LoginService {
 
     throw new Error('No user id in token');
   }
+
+  recoverPassword(params = {}) {
+    return this.http.post<Response>(environment.backendUrl + 'recover-password', params);
+  }
 }
