@@ -74,4 +74,8 @@ export class LoginService {
   recoverPassword(params = {}) {
     return this.http.post<Response>(environment.backendUrl + 'recover-password', params);
   }
+
+  resetPassword(params = {}) {
+    return this.http.post<Response>(environment.backendUrl + 'reset-password', params);
+  }
 }
