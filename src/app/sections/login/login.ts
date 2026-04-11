@@ -40,4 +40,8 @@ export class Login implements OnInit {
       }
     });
   }
+
+  onRecoverPassword() {
+    this.router.navigate(['/recover-password']);
+  }
 }
