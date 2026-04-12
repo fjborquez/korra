@@ -100,7 +100,9 @@ export class Inventory {
   }
 
   saveProduct() {
-    this.showInventoryForm.set(false);
-    this.refreshList();
+    setTimeout(() => {
+      this.showInventoryForm.set(false);
+      this.refreshList();
+    }, 2000);
   }
 }
