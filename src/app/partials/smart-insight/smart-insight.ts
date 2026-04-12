@@ -1,9 +1,10 @@
+import { DecimalPipe } from '@angular/common';
 import { Statistics } from './../../interfaces/statistics.interface';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-smart-insight',
-  imports: [],
+  imports: [DecimalPipe],
   templateUrl: './smart-insight.html',
   styleUrl: './smart-insight.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
