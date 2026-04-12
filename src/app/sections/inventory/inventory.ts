@@ -96,7 +96,7 @@ export class Inventory {
   }
 
   refreshList() {
-    this.getList().subscribe(() => this.filter());
+    setTimeout(() => this.getList().subscribe(() => this.filter()), 2000);
   }
 
   saveProduct() {
