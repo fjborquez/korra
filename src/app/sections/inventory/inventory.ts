@@ -98,4 +98,9 @@ export class Inventory {
   refreshList() {
     this.getList().subscribe(() => this.filter());
   }
+
+  saveProduct() {
+    this.showInventoryForm.set(false);
+    this.refreshList();
+  }
 }
