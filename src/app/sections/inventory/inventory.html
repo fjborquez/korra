@@ -48,7 +48,7 @@
       }
     </div>
     @if (showInventoryForm()) {
-      <app-inventory-form [houseId]="houseId()" (cancelled)="showInventoryForm.set(false)" (saved)="showInventoryForm.set(false)"></app-inventory-form>
+      <app-inventory-form [houseId]="houseId()" (cancelled)="showInventoryForm.set(false)" (saved)="saveProduct()"></app-inventory-form>
     }
   }
   @else {
