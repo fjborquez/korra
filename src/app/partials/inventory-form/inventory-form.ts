@@ -95,7 +95,7 @@ export class InventoryForm implements OnInit {
 
   onSubmit() {
     const userId = this.loginService.getUserId();
-    this.inventoryForm.disable();
+
     this.houseService.get(userId, this.houseId).subscribe((response: Response) => {
       const house = response.message as House;
 
