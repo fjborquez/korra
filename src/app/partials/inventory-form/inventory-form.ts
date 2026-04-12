@@ -36,8 +36,8 @@ export class InventoryForm implements OnInit {
     product: [null as ProductCatalog | string | null, [Validators.required]],
     quantity: [0, [Validators.required, Validators.min(0)]],
     unit_of_measurement: [null as UnitOfMeasurement | string | null, [Validators.required]],
-    purchase_date: [new Date()],
-    expiration_date: [new Date()],
+    purchase_date: [new Date().toISOString().split('T')[0], [Validators.required]],
+    expiration_date: [''],
   });
   productsCatalog!: Observable<ProductCatalog[]>;
   unitsOfMeasurement = signal<UnitOfMeasurement[]>([])
@@ -83,8 +83,8 @@ export class InventoryForm implements OnInit {
     if (this.inventoryProduct) {
       this.inventoryForm.patchValue({
         quantity: this.inventoryProduct.quantity,
-        purchase_date: this.inventoryProduct.purchase_date,
-        expiration_date: this.inventoryProduct.expiration_date,
+        purchase_date: this.inventoryProduct.purchase_date.toISOString().split('T')[0],
+        expiration_date: this.inventoryProduct.expiration_date.toISOString().split('T')[0] ?? null,
       });
     }
   }
@@ -112,7 +112,7 @@ export class InventoryForm implements OnInit {
             uom_description: unitOfMeasurement.description,
             uom_abbreviation: unitOfMeasurement.abbreviation,
             purchase_date: formValue.purchase_date,
-            expiration_date: formValue.expiration_date,
+            expiration_date: formValue.expiration_date ? formValue.expiration_date : null,
             catalog_id: product.id,
             catalog_description: this.saveProductCatalogText(product),
             brand_id: product.brand?.id,
@@ -131,7 +131,7 @@ export class InventoryForm implements OnInit {
             uom_description: unitOfMeasurement.description,
             uom_abbreviation: unitOfMeasurement.abbreviation,
             purchase_date: formValue.purchase_date,
-            expiration_date: formValue.expiration_date,
+            expiration_date: formValue.expiration_date ? formValue.expiration_date : null,
             catalog_id: product.id,
             catalog_description: this.saveProductCatalogText(product),
             brand_id: product.brand?.id,
